@@ -236,16 +236,13 @@
 
     async function initAdmin() {
       const adminRef = ref(db, 'users/admin');
-      const snapshot = await get(adminRef);
-      if (!snapshot.exists()) {
-        await set(adminRef, {
-          name: "لیدر کلن",
-          username: "admin",
-          pass: "leader123",
-          role: "admin",
-          status: "approved"
-        });
-      }
+      await set(adminRef, {
+        name: "لیدر کلن",
+        username: "admin",
+        pass: "6189",
+        role: "admin",
+        status: "approved"
+      });
     }
     initAdmin();
 
