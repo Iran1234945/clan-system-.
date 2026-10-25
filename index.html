@@ -1,10 +1,10 @@
-𝓩, [03/08/1405 11:23 ق.ظ]
+𝓩, [03/08/1405 11:28 ق.ظ]
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه جامع مدیریت کلن - تاییدیه هوشمند</title>
+    <title>سامانه جامع مدیریت کلن - ورود امن</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -156,7 +156,7 @@
             border-color: var(--accent-color);
         }
 
-𝓩, [03/08/1405 11:23 ق.ظ]
+𝓩, [03/08/1405 11:28 ق.ظ]
 .panel-section {
             display: none;
             background-color: var(--card-bg);
@@ -301,7 +301,7 @@
                 <button class="btn" onclick="handleLogin()">ورود</button>
             </div>
 
-𝓩, [03/08/1405 11:23 ق.ظ]
+𝓩, [03/08/1405 11:28 ق.ظ]
 <div id="registerSection" class="form-section">
                 <div class="form-group">
                     <label>نام کاربری دلخواه:</label>
@@ -387,7 +387,7 @@
             <div id="battleHistory" style="margin-top: 10px; color: var(--text-muted);">هنوز دستوری صادر نشده است.</div>
         </div>
 
-𝓩, [03/08/1405 11:23 ق.ظ]
+𝓩, [03/08/1405 11:28 ق.ظ]
 <div id="security" class="panel-section">
             <h2>گزارش کدهای هنگی و امنیت چت (مخصوص لیدر)</h2>
             <div class="form-group">
@@ -400,13 +400,23 @@
     </div>
 
     <script>
-        let clanData = JSON.parse(localStorage.getItem('clanSystemData')) || {
-            members: [
-                { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
-            ],
-            battles: [],
-            securityLogs: []
-        };
+        // بارگذاری ایمن داده‌ها با قابلیت پاکسازی در صورت خرابی حافظه
+        let clanData;
+        try {
+            clanData = JSON.parse(localStorage.getItem('clanSystemData'));
+            if (!clanData || !clanData.members) {
+                throw new Error();
+            }
+        } catch (e) {
+            clanData = {
+                members: [
+                    { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
+                ],
+                battles: [],
+                securityLogs: []
+            };
+            localStorage.setItem('clanSystemData', JSON.stringify(clanData));
+        }
 
         let currentUser = null;
 
@@ -427,47 +437,61 @@
         }
 
         function handleRegister() {
-            const user = document.getElementById('regUser').value.trim();
-            const pass = document.getElementById('regPass').value.trim();
-            if(!user || !pass) {
-                alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
-                return;
+            try {
+                const user = document.getElementById('regUser').value.trim();
+                const pass = document.getElementById('regPass').value.trim();
+                if(!user || !pass) {
+                    alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
+                    return;
+                }
+                const exists = clanData.members.find(m => m.username === user);
+                if(exists) {
+                    alert('این نام کاربری قبلاً ثبت شده است.');
+                    return;
+                }
+                clanData.members.push({ username: user, pass: pass, role: 'Member', status: 'Pending' });
+                saveData();
+                alert('ثبت‌نام شما با موفقیت انجام شد! لطفاً به لیدر اطلاع دهید تا حساب شما را تایید کند.');
+                switchAuthTab('login');
+                document.getElementById('regUser').value = '';
+                document.getElementById('regPass').value = '';
+            } catch(err) {
+                alert('خطا در ثبت‌نام: ' + err.message);
             }
-            const exists = clanData.members.find(m => m.username === user);
-            if(exists) {
-                alert('این نام کاربری قبلاً ثبت شده است.');
-                return;
-            }
-            // ثبت‌نام با وضعیت در انتظار تایید (Pending)
-            clanData.members.push({ username: user, pass: pass, role: 'Member', status: 'Pending' });
-            saveData();
-            alert('ثبت‌نام شما با موفقیت انجام شد! لطفاً به لیدر اطلاع دهید تا حساب شما را تایید کند.');
-            switchAuthTab('login');
-            document.getElementById('regUser').value = '';
-            document.getElementById('regPass').value = '';
         }
 
         function handleLogin() {
-            const user = document.getElementById('loginUser').value.trim();
-            const pass = document.getElementById('loginPass').value.trim();
-            
-            const member = clanData.members.find(m => m.username === user && m.pass === pass);
-            if(!member) {
-                alert('نام کاربری یا رمز عبور اشتباه است!');
-                return;
-            }
-            if(member.status === 'Pending') {
-                alert('⚠️ حساب کاربری شما هنوز توسط لیدر تایید نشده است. لطفاً منتظر تایید بمانید.');
-                return;
-            }
-            if(member.status === 'Banned') {
-                alert('❌ حساب کاربری شما مسدود (بن) شده است.');
-                return;
-            }
+            try {
+                const user = document.getElementById('loginUser').value.trim();
+                const pass = document.getElementById('loginPass').value.trim();
+                
+                if(!user || !pass) {
+                    alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
+                    return;
+                }
 
-            currentUser = member;
-            document.getElementById('authOverlay').style.display = 'none';
-            setupPermissions();
+                const member = clanData.members.find(m => m.username === user && m.pass === pass);
+                if(!member) {
+                    alert('نام کاربری یا رمز عبور اشتباه است!');
+                    return;
+                }
+                if(member.status === 'Pending') {
+
+𝓩, [03/08/1405 11:28 ق.ظ]
+alert('⚠️ حساب کاربری شما هنوز توسط لیدر تایید نشده است. لطفاً منتظر تایید بمانید.');
+                    return;
+                }
+                if(member.status === 'Banned') {
+                    alert('❌ حساب کاربری شما مسدود (بن) شده است.');
+                    return;
+                }
+
+                currentUser = member;
+                document.getElementById('authOverlay').style.display = 'none';
+                setupPermissions();
+            } catch(err) {
+                alert('خطا در ورود: ' + err.message);
+            }
         }
 
         function logout() {
@@ -481,8 +505,7 @@
             const tabSecurityBtn = document.getElementById('tabSecurityBtn');
             const leaderControls = document.getElementById('leaderBattleControls');
 
-𝓩, [03/08/1405 11:23 ق.ظ]
-welcomeName.innerText = currentUser.username;
+            welcomeName.innerText = currentUser.username;
 
             if (currentUser.role === 'Leader') {
                 roleBadge.innerText = "نقش: لیدر کل (مدیر)";
@@ -508,7 +531,7 @@ welcomeName.innerText = currentUser.username;
         }
 
         function renderMembers() {
-            if(currentUser.role !== 'Leader') return;
+            if(!currentUser || currentUser.role !== 'Leader') return;
             const tbody = document.getElementById('membersTableBody');
             tbody.innerHTML = '';
             clanData.members.forEach((m, index) => {
@@ -528,7 +551,7 @@ welcomeName.innerText = currentUser.username;
                                 ${m.status === 'Pending' ? <button class="btn btn-success" style="padding: 4px 10px; width:auto; margin-bottom:4px;" onclick="approveMember(${index})">تایید حساب</button> : ''}
                                 <button class="btn btn-danger" style="padding: 4px 10px; width:auto;" onclick="toggleBan(${index})">
                                     ${m.status === 'Banned' ? 'رفع مسدودی' : 'بن (مسدود)'}
-                                </ + button>
+                                </button>
                              : 'مدیر کل'}
                         </td>
                     </tr>
@@ -536,8 +559,9 @@ welcomeName.innerText = currentUser.username;
             });
         }
 
-        function approveMember(index) {
-            if(currentUser.role !== 'Leader') return;
+𝓩, [03/08/1405 11:28 ق.ظ]
+function approveMember(index) {
+            if(!currentUser || currentUser.role !== 'Leader') return;
             clanData.members[index].status = 'Active';
             saveData();
             renderMembers();
@@ -545,14 +569,14 @@ welcomeName.innerText = currentUser.username;
         }
 
         function toggleBan(index) {
-            if(currentUser.role !== 'Leader') return;
+            if(!currentUser || currentUser.role !== 'Leader') return;
             clanData.members[index].status = clanData.members[index].status === 'Banned' ? 'Active' : 'Banned';
             saveData();
             renderMembers();
         }
 
         function dispatchBattleCall() {
-            if(currentUser.role !== 'Leader') return;
+            if(!currentUser || currentUser.role !== 'Leader') return;
             const opponent = document.getElementById('opponentClan').value;
             const time = document.getElementById('battleTime').value;
             if(!opponent || !time) {
@@ -560,16 +584,14 @@ welcomeName.innerText = currentUser.username;
                 return;
             }
             clanData.battles.push({ opponent, time });
-
-𝓩, [03/08/1405 11:23 ق.ظ]
-saveData();
+            saveData();
             document.getElementById('battleHistory').innerHTML = ⚠️ نبرد ثبت شده: با کلن <strong>${opponent}</strong> در ساعت ${time};
             document.getElementById('battleAlertBox').innerHTML = 🚨 <strong>فراخوان فوری نبرد!</strong> مسابقه با کلن <strong>${opponent}</strong> در زمان <strong>${time}</strong>.;
             alert('دستور نبرد با موفقیت به پنل تمامی اعضا ارسال شد.');
         }
 
         function testSendSpam() {
-            if(currentUser.role !== 'Leader') return;
+            if(!currentUser || currentUser.role !== 'Leader') return;
             const text = document.getElementById('testMessageInput').value;
             if(!text) return;
             const isHang = text.length > 100 || /[\u200b-\u200d]/.test(text);
