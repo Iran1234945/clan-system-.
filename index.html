@@ -19,15 +19,15 @@
     }
 
     .navbar {
-      background: rgba(15, 23, 42, 0.8) !important;
+      background: rgba(15, 23, 42, 0.85) !important;
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(30, 41, 59, 0.75);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 16px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
@@ -40,7 +40,7 @@
     }
 
     .form-control:focus, .form-select:focus {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.9);
       color: #fff;
       border-color: #6366f1;
       box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
@@ -69,8 +69,9 @@
       flex-direction: column;
       gap: 10px;
       padding: 15px;
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.5);
       border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .chat-bubble {
@@ -129,10 +130,10 @@
         <div class="glass-card p-4">
           <ul class="nav nav-pills nav-justified mb-4" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active text-white" id="tab-login" data-bs-toggle="pill" data-bs-target="#pills-login" type="button">ورود اعضا</button>
+              <button class="nav-link active text-white fw-bold" id="tab-login" data-bs-toggle="pill" data-bs-target="#pills-login" type="button">ورود اعضا</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link text-white" id="tab-register" data-bs-toggle="pill" data-bs-target="#pills-register" type="button">ثبت نام جدید</button>
+              <button class="nav-link text-white fw-bold" id="tab-register" data-bs-toggle="pill" data-bs-target="#pills-register" type="button">ثبت نام جدید</button>
             </li>
           </ul>
 
@@ -217,7 +218,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, child, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // تنظیمات فایربیس اختصاصی شما
     const firebaseConfig = {
       apiKey: "AIzaSyD25Qf8dy99c3xaE_M-cGBUTlAlcweUIiI",
       authDomain: "alliance-us.firebaseapp.com",
@@ -234,7 +234,6 @@
 
     let currentUser = null;
 
-    // ساخت اکانت پیش‌فرض ادمین در صورت عدم وجود
     async function initAdmin() {
       const adminRef = ref(db, 'users/admin');
       const snapshot = await get(adminRef);
@@ -250,7 +249,6 @@
     }
     initAdmin();
 
-    // ثبت نام کاربر جدید
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
@@ -277,7 +275,6 @@
       }
     });
 
-    // ورود کاربر
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('loginUser').value.trim().toLowerCase();
@@ -303,7 +300,6 @@
       }
     });
 
-    // بارگذاری داشبورد
     function loadDashboard() {
       document.getElementById('authSection').classList.add('d-none');
       document.getElementById('mainDashboard').classList.remove('d-none');
@@ -325,7 +321,6 @@
       listenToChat();
     }
 
-    // گوش دادن به تغییرات اعضا (مخصوص لیدر)
     function listenToMembers() {
       const usersRef = ref(db, 'users');
       onValue(usersRef, (snapshot) => {
@@ -368,7 +363,6 @@
       }
     };
 
-    // گوش دادن به چت‌های آنلاین
     function listenToChat() {
       const messagesRef = ref(db, 'messages');
       onValue(messagesRef, (snapshot) => {
@@ -389,7 +383,6 @@
       });
     }
 
-    // ارسال پیام جدید در چت
     document.getElementById('chatForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const input = document.getElementById('chatInput');
