@@ -1,4 +1,44 @@
-𝓩, [03/08/1405 11:49 ق.ظ]
+𝓩, [03/08/1405 11:57 ق.ظ]
+tbody.innerHTML = '';
+            db.users.forEach((m, idx) => {
+                let stText = m.status === 'Active' ? 'فعال' : 'در انتظار تایید';
+                let stClass = m.status === 'Active' ? 'badge-active' : 'badge-pending';
+                
+                tbody.innerHTML += 
+                    <tr>
+                        <td><strong>${m.username}</strong></td>
+                        <td><code style="background:#0f172a; padding:3px 6px; border-radius:4px; color:var(--green);">${m.pass}</code></td>
+                        <td><span class="badge ${stClass}">${stText}</span></td>
+                        <td>
+                            ${m.role !== 'Leader' && m.status === 'Pending' ? <button class="btn-green" style="padding:4px 8px; font-size:0.8rem; width:auto;" onclick="approve(${idx})">تایید حساب</button> : ''}
+                            ${m.role !== 'Leader' ? <button class="btn-red" style="padding:4px 8px; font-size:0.8rem; width:auto; margin-top:2px;" onclick="delUser(${idx})">حذف</button> : 'مدیر کل'}
+                        </td>
+                    </tr>
+                ;
+            });
+        }
+
+        function approve(idx) {
+            let db = JSON.parse(localStorage.getItem('clan_db'));
+            db.users[idx].status = 'Active';
+            localStorage.setItem('clan_db', JSON.stringify(db));
+            renderAdmin();
+            alert('حساب کاربر با موفقیت تایید شد.');
+        }
+
+        function delUser(idx) {
+            let db = JSON.parse(localStorage.getItem('clan_db'));
+            if(confirm('آیا از حذف این کاربر مطمئن هستید؟')) {
+                db.users.splice(idx, 1);
+                localStorage.setItem('clan_db', JSON.stringify(db));
+                renderAdmin();
+            }
+        }
+    </script>
+</body>
+</html>
+
+𝓩, [03/08/1405 11:57 ق.ظ]
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -69,7 +109,7 @@
             <div style="overflow-x:auto;">
                 <table>
 
-𝓩, [03/08/1405 11:49 ق.ظ]
+𝓩, [03/08/1405 11:57 ق.ظ]
 <thead>
                         <tr>
                             <th>نام کاربری</th>
@@ -90,7 +130,7 @@
     </div>
 
     <script>
-        window.switchMode = function(m) {
+        function switchMode(m) {
             if(m === 'login') {
                 document.getElementById('loginForm').style.display = 'block';
                 document.getElementById('regForm').style.display = 'none';
@@ -102,9 +142,9 @@
                 document.getElementById('btnR').style.background = 'var(--blue)';
                 document.getElementById('btnL').style.background = 'var(--border)';
             }
-        };
+        }
 
-        window.register = function() {
+        function register() {
             let db = JSON.parse(localStorage.getItem('clan_db')) || {
                 users: [{ username: 'admin', pass: 'leader123', role: 'Leader', status: 'Active' }]
             };
@@ -116,12 +156,12 @@
             db.users.push({ username: u, pass: p, role: 'Member', status: 'Pending' });
             localStorage.setItem('clan_db', JSON.stringify(db));
             alert('ثبت‌نام با موفقیت انجام شد! منتظر تایید لیدر بمانید.');
-            window.switchMode('login');
+            switchMode('login');
             document.getElementById('rUser').value = '';
             document.getElementById('rPass').value = '';
-        };
+        }
 
-        window.login = function() {
+        function login() {
             let db = JSON.parse(localStorage.getItem('clan_db')) || {
                 users: [{ username: 'admin', pass: 'leader123', role: 'Leader', status: 'Active' }]
             };
@@ -143,48 +183,8 @@
             } else {
                 document.getElementById('memberSection').style.display = 'block';
             }
-        };
+        }
 
         function renderAdmin() {
             let db = JSON.parse(localStorage.getItem('clan_db'));
-
-𝓩, [03/08/1405 11:49 ق.ظ]
-let tbody = document.getElementById('memberTable');
-            tbody.innerHTML = '';
-            db.users.forEach((m, idx) => {
-                let stText = m.status === 'Active' ? 'فعال' : 'در انتظار تایید';
-                let stClass = m.status === 'Active' ? 'badge-active' : 'badge-pending';
-                
-                tbody.innerHTML += 
-                    <tr>
-                        <td><strong>${m.username}</strong></td>
-                        <td><code style="background:#0f172a; padding:3px 6px; border-radius:4px; color:var(--green);">${m.pass}</code></td>
-                        <td><span class="badge ${stClass}">${stText}</span></td>
-                        <td>
-                            ${m.role !== 'Leader' && m.status === 'Pending' ? <button class="btn-green" style="padding:4px 8px; font-size:0.8rem; width:auto;" onclick="approve(${idx})">تایید حساب</button> : ''}
-                            ${m.role !== 'Leader' ? <button class="btn-red" style="padding:4px 8px; font-size:0.8rem; width:auto; margin-top:2px;" onclick="delUser(${idx})">حذف</button> : 'مدیر کل'}
-                        </td>
-                    </tr>
-                ;
-            });
-        }
-
-        window.approve = function(idx) {
-            let db = JSON.parse(localStorage.getItem('clan_db'));
-            db.users[idx].status = 'Active';
-            localStorage.setItem('clan_db', JSON.stringify(db));
-            renderAdmin();
-            alert('حساب کاربر با موفقیت تایید شد.');
-        };
-
-        window.delUser = function(idx) {
-            let db = JSON.parse(localStorage.getItem('clan_db'));
-            if(confirm('آیا از حذف این کاربر مطمئن هستید؟')) {
-                db.users.splice(idx, 1);
-                localStorage.setItem('clan_db', JSON.stringify(db));
-                renderAdmin();
-            }
-        };
-    </script>
-</body>
-</html>
+            let tbody = document.getElementById('memberTable');
