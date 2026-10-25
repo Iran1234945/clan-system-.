@@ -3,324 +3,651 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه مدیریت کلن</title>
+    <title>سامانه ⚡️ALLIANCE US⚡️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --blue: #3b82f6;
-            --green: #22c55e;
+            --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #070a13 100%);
+            --card-bg: rgba(30, 41, 59, 0.75);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --green: #10b981;
             --red: #ef4444;
-            --text: #f8fafc;
-            --muted: #94a3b8;
-            --border: #334155;
+            --gold: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
         }
+
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: Tahoma, Segoe UI, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
             padding: 20px;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
         }
-        .box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 400px;
-            margin: 50px auto;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08), transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.08), transparent 40%);
+            z-index: -1;
+            animation: bgPulse 12s infinite alternate;
         }
-        h2, h3 {
-            margin-bottom: 15px;
+
+        @keyframes bgPulse {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(5deg); }
         }
-        input, button {
+
+        .container {
             width: 100%;
-            padding: 12px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #60a5fa, #22d3ee, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .brand-sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
             margin: 8px 0;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: 6px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            border-radius: 10px;
             font-size: 0.95rem;
             outline: none;
         }
-        input:focus {
-            border-color: var(--blue);
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
         }
-        button {
-            background: var(--blue);
+
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
-        button:hover {
-            background: #2563eb;
+
+        .btn:hover {
+            transform: translateY(-2deg);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
         }
-        .btn-green {
-            background: var(--green);
+
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn-green:hover { box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5); }
+
+        .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-red:hover { box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5); }
+
+        .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
-        .btn-green:hover {
-            background: #16a34a;
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
         }
-        .btn-red {
-            background: var(--red);
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent-cyan);
+            margin-top: 5px;
         }
-        .btn-red:hover {
-            background: #dc2626;
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
             text-align: right;
+            background: rgba(15, 23, 42, 0.4);
         }
+
         th, td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--card-border);
             font-size: 0.9rem;
         }
+
         th {
-            background: var(--bg);
-            color: var(--muted);
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text-muted);
+            font-weight: 700;
         }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
         .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
+            font-weight: 700;
         }
-        .badge-active {
-            background: var(--green);
-            color: white;
+
+        .badge-active { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .badge-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+        .announcement-box {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.15));
+            border-right: 4px solid var(--accent-blue);
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
-        .badge-pending {
-            background: #f59e0b;
-            color: black;
+
+        .chat-box {
+            height: 280px;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 12px;
         }
-        .tab-btn {
-            background: var(--border);
-            color: var(--muted);
+
+        .chat-item {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 14px;
+            border-radius: 10px;
+            max-width: 85%;
         }
-        .tab-btn.active {
-            background: var(--blue);
-            color: white;
+
+        .chat-item.leader-msg {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .chat-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .chat-user {
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .chat-user.leader-tag {
+            color: #f59e0b;
+        }
+
+        .chat-text {
+            font-size: 0.9rem;
+            word-break: break-word;
         }
     </style>
 </head>
 <body>
 
-    <!-- صفحه ورود و ثبت نام -->
-    <div id="authScreen" class="box">
-        <h2>سامانه کلن</h2>
-        <div style="display:flex; gap:8px; margin-bottom:15px;">
-            <button onclick="switchMode('login')" id="btnL" class="tab-btn active">ورود</button>
-            <button onclick="switchMode('reg')" id="btnR" class="tab-btn">ثبت‌نام</button>
-        </div>
-        
-        <div id="loginForm">
-            <input type="text" id="lUser" placeholder="نام کاربری">
-            <input type="password" id="lPass" placeholder="رمز عبور">
-            <button onclick="loginUser()">ورود به سامانه</button>
+    <div class="container">
+        <!-- هدر و برند کلن -->
+        <div class="brand-header">
+            <h1 class="brand-title">سامانه ⚡️ALLIANCE US⚡️</h1>
+            <div class="brand-sub">مرکز مدیریت، هماهنگی و گفتگوی اعضای کلن</div>
         </div>
 
-        <div id="regForm" style="display:none;">
-            <input type="text" id="rUser" placeholder="نام کاربری دلخواه">
-            <input type="password" id="rPass" placeholder="رمز عبور دلخواه">
-            <button class="btn-green" onclick="registerUser()">ثبت‌نام (نیازمند تایید لیدر)</button>
-        </div>
-        
-        <p style="font-size:0.8rem; color:var(--muted); margin-top:15px;">ادمین پیش‌فرض: admin / leader123</p>
-    </div>
+        <!-- صفحه ورود / ثبت‌نام -->
+        <div id="authScreen" class="glass-card" style="max-width:420px; margin:0 auto;">
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <button class="btn" onclick="switchTab('login')" id="tabLogin" style="flex:1;">ورود به حساب</button>
+                <button class="btn" onclick="switchTab('reg')" id="tabReg" style="flex:1; background:transparent; border:1px solid var(--card-border);">ثبت‌نام عضو</button>
+            </div>
 
-    <!-- پنل اصلی بعد از ورود -->
-    <div id="mainPanel" style="display:none; max-width:900px; margin:0 auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card); padding:15px 20px; border-radius:10px; border:1px solid var(--border);">
-            <h2>خوش آمدید، <span id="uNameDisp" style="color:var(--blue)"></span></h2>
-            <button onclick="location.reload()" class="btn-red" style="width:auto; padding:8px 18px;">خروج</button>
-        </div>
+            <!-- فرم ورود (بدون نمایش پیش‌فرض مشخصات) -->
+            <div id="loginForm">
+                <input type="text" id="lUser" placeholder="نام کاربری">
+                <input type="password" id="lPass" placeholder="رمز عبور">
+                <button class="btn" style="width:100%; margin-top:10px;" onclick="login()">🚀 ورود به سامانه</button>
+            </div>
 
-        <!-- پنل مدیریت لیدر -->
-        <div id="adminSection" style="display:none; background:var(--card); padding:20px; border-radius:10px; border:1px solid var(--border); margin-top:20px;">
-            <h3>مدیریت اعضا و مشاهده رمزهای عبور (پنل لیدر)</h3>
-            <p style="color:var(--muted); font-size:0.85rem; margin-bottom:10px;">اعضای جدید پس از تایید توسط شما، اجازه ورود به سامانه را خواهند داشت.</p>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>نام کاربری</th>
-                            <th>رمز عبور</th>
-                            <th>وضعیت</th>
-                            <th>عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="memberTable"></tbody>
-                </table>
+            <!-- فرم ثبت‌نام -->
+            <div id="regForm" style="display:none;">
+                <input type="text" id="rUser" placeholder="نام کاربری دلخواه">
+                <input type="password" id="rPass" placeholder="رمز عبور دلخواه">
+                <button class="btn btn-green" style="width:100%; margin-top:10px;" onclick="register()">📝 درخواست ثبت‌نام</button>
             </div>
         </div>
 
-        <!-- پنل عضو عادی -->
-        <div id="memberSection" style="display:none; background:var(--card); padding:30px; border-radius:10px; border:1px solid var(--border); margin-top:20px; text-align:center;">
-            <h3>خوش آمدید عضو گرامی!</h3>
-            <p style="color:var(--muted); margin-top:10px;">حساب شما تایید شده و به سامانه کلن دسترسی کامل دارید.</p>
+        <!-- پنل اصلی کلن -->
+        <div id="mainPanel" style="display:none;">
+            
+            <!-- نوار بالای پنل -->
+            <div class="glass-card" style="display:flex; justify-content:space-between; align-items:center; padding:15px 25px; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <span style="color:var(--text-muted);">خوش آمدید، </span>
+                    <strong id="uNameDisp" style="color:var(--accent-cyan); font-size:1.1rem;"></strong>
+                    <span id="roleBadge" class="badge badge-active" style="margin-right:8px;"></span>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-gold" onclick="togglePassResetBox()" style="padding:6px 15px; font-size:0.85rem;">🔑 بازنشانی رمز عبور</button>
+                    <button class="btn btn-red" onclick="location.reload()" style="padding:6px 15px; font-size:0.85rem;">خروج</button>
+                </div>
+            </div>
+
+            <!-- کادر بازنشانی رمز عبور -->
+            <div id="passResetBox" class="glass-card" style="display:none; border:1px solid var(--gold);">
+                <h4 style="margin-top:0; color:var(--gold);">🔑 بازنشانی و تغییر رمز عبور حساب</h4>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <input type="password" id="newPasswordInput" placeholder="رمز عبور جدید را وارد کنید..." style="flex:2; min-width:200px;">
+                    <button class="btn btn-green" onclick="changeMyPassword()" style="flex:1; min-width:120px;">ذخیره رمز جدید</button>
+                </div>
+            </div>
+
+            <!-- بخش اعلانات آنلاین -->
+            <div class="announcement-box">
+                <strong style="color:var(--accent-cyan);">📢 اطلاعیه کلن: </strong>
+                <span id="newsText">به سامانه مدیریت ALLIANCE US خوش آمدید.</span>
+            </div>
+
+            <!-- چت‌روم زنده کلن -->
+            <div class="glass-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="margin:0;">💬 چت‌روم زنده کلن ALLIANCE US</h3>
+                    <button id="clearChatBtn" class="btn btn-red" style="padding:4px 10px; font-size:0.75rem; display:none;" onclick="clearChat()">پاک کردن چت‌روم</button>
+                </div>
+                <div class="chat-box" id="chatBox"></div>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="chatInput" placeholder="پیام خود را بنویسید..." onkeypress="if(event.key==='Enter') sendChat()" style="margin:0;">
+                    <button class="btn" style="width:auto; padding:0 25px;" onclick="sendChat()">ارسال</button>
+                </div>
+            </div>
+
+            <!-- پنل ویژه لیدر / ادمین -->
+            <div id="adminSection" style="display:none;">
+                
+                <!-- کارت‌های آمار زنده -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div style="color:var(--text-muted); font-size:0.85rem;">کل اعضای ثبت‌شده</div>
+                        <div class="stat-value" id="statTotal">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="color:var(--text-muted); font-size:0.85rem;">اعضای فعال</div>
+                        <div class="stat-value" id="statActive" style="color:var(--green);">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="color:var(--text-muted); font-size:0.85rem;">در انتظار تایید لیدر</div>
+                        <div class="stat-value" id="statPending" style="color:var(--gold);">0</div>
+                    </div>
+                </div>
+
+                <!-- بخش مدیریت و فیلترها -->
+                <div class="glass-card">
+                    <h3>👥 مدیریت اعضا و نظارت</h3>
+                    
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
+                        <input type="text" id="searchInput" placeholder="🔍 جستجوی نام کاربری..." onkeyup="renderAdminTable()" style="flex:2; min-width:200px;">
+                        <select id="filterStatus" onchange="renderAdminTable()" style="flex:1; min-width:140px;">
+                            <option value="all">همه وضعیت‌ها</option>
+                            <option value="Active">فقط فعال‌ها</option>
+                            <option value="Pending">در انتظار تایید</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>نام کاربری</th>
+                                    <th>رمز عبور</th>
+                                    <th>نقش</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات مدیریت</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- تنظیمات سریع لیدر -->
+                <div class="glass-card">
+                    <h3>⚙️ ابزارهای لیدر (مدیریت اطلاعیه و عضو جدید)</h3>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px;">
+                        <div>
+                            <label style="font-size:0.85rem; color:var(--text-muted);">به‌روزرسانی اطلاعیه کلن:</label>
+                            <input type="text" id="newAnnounce" placeholder="متن جدید اطلاعیه...">
+                            <button class="btn btn-green" onclick="updateAnnouncement()" style="width:100%;">ثبت اطلاعیه جدید</button>
+                        </div>
+                        <div>
+                            <label style="font-size:0.85rem; color:var(--text-muted);">افزودن مستقیم عضو به کلن:</label>
+                            <div style="display:flex; gap:5px;">
+                                <input type="text" id="directUser" placeholder="نام کاربری">
+                                <input type="password" id="directPass" placeholder="رمز">
+                            </div>
+                            <button class="btn btn-gold" onclick="addDirectMember()" style="width:100%;">افزودن عضو تاییدشده</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- پنل اعضای عادی -->
+            <div id="memberSection" class="glass-card" style="display:none; text-align:center; padding:30px;">
+                <h2 style="color:var(--green);">⚡️ به کلن ALLIANCE US خوش آمدید!</h2>
+                <p style="color:var(--text-muted); max-width:500px; margin:15px auto;">حساب شما فعال است و می‌توانید در چت‌روم بالا با هم‌کلنی‌های خود گفتگو کنید.</p>
+            </div>
+
         </div>
     </div>
 
     <script>
+        let currentUser = null;
+
         function getDB() {
-            let data = localStorage.getItem('clan_db');
-            if(!data) {
-                let defaultDB = {
-                    users: [{ username: 'admin', pass: 'leader123', role: 'Leader', status: 'Active' }]
-                };
-                localStorage.setItem('clan_db', JSON.stringify(defaultDB));
-                return defaultDB;
-            }
-            return JSON.parse(data);
+            return JSON.parse(localStorage.getItem('alliance_us_db')) || {
+                announcement: 'به سامانه اختصاصی ⚡️ALLIANCE US⚡️ خوش آمدید.',
+                users: [{ username: 'admin', pass: 'leader123', role: 'Leader', status: 'Active' }],
+                chats: []
+            };
         }
 
         function saveDB(db) {
-            localStorage.setItem('clan_db', JSON.stringify(db));
+            localStorage.setItem('alliance_us_db', JSON.stringify(db));
         }
 
-        function switchMode(m) {
-            let lForm = document.getElementById('loginForm');
-            let rForm = document.getElementById('regForm');
-            let btnL = document.getElementById('btnL');
-            let btnR = document.getElementById('btnR');
-
-            if(m === 'login') {
-                lForm.style.display = 'block';
-                rForm.style.display = 'none';
-                btnL.classList.add('active');
-                btnR.classList.remove('active');
+        function switchTab(mode) {
+            if(mode === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('regForm').style.display = 'none';
+                document.getElementById('tabLogin').style.background = 'var(--accent-blue)';
+                document.getElementById('tabReg').style.background = 'transparent';
             } else {
-                lForm.style.display = 'none';
-                rForm.style.display = 'block';
-                btnR.classList.add('active');
-                btnL.classList.remove('active');
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('regForm').style.display = 'block';
+                document.getElementById('tabReg').style.background = 'var(--accent-blue)';
+                document.getElementById('tabLogin').style.background = 'transparent';
             }
         }
 
-        function registerUser() {
+        function register() {
+            let db = getDB();
             let u = document.getElementById('rUser').value.trim();
             let p = document.getElementById('rPass').value.trim();
 
-            if(!u || !p) {
-                alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
-                return;
-            }
-
-            let db = getDB();
-            if(db.users.some(function(x) { return x.username === u; })) {
-                alert('این نام کاربری قبلاً ثبت شده است.');
-                return;
+            if(!u || !p) { alert('لطفاً تمام فیلدها را پر کنید.'); return; }
+            if(db.users.find(x => x.username.toLowerCase() === u.toLowerCase())) {
+                alert('این نام کاربری قبلاً ثبت شده است.'); return;
             }
 
             db.users.push({ username: u, pass: p, role: 'Member', status: 'Pending' });
             saveDB(db);
-
-            alert('ثبت‌نام با موفقیت انجام شد! منتظر تایید لیدر بمانید.');
-            switchMode('login');
-            document.getElementById('rUser').value = '';
-            document.getElementById('rPass').value = '';
+            alert('ثبت‌نام انجام شد! پس از تایید لیدر می‌توانید وارد شوید.');
+            switchTab('login');
         }
 
-        function loginUser() {
+        function login() {
+            let db = getDB();
             let u = document.getElementById('lUser').value.trim();
             let p = document.getElementById('lPass').value.trim();
 
-            if(!u || !p) {
-                alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
-                return;
-            }
+            let user = db.users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.pass === p);
 
-            let db = getDB();
-            let user = null;
+            if(!user) { alert('نام کاربری یا رمز عبور نادرست است.'); return; }
+            if(user.status === 'Pending') { alert('⚠️ حساب شما هنوز توسط لیدر تایید نشده است.'); return; }
 
-            for(let i = 0; i < db.users.length; i++) {
-                if(db.users[i].username === u && db.users[i].pass === p) {
-                    user = db.users[i];
-                    break;
-                }
-            }
-
-            if(!user) {
-                alert('نام کاربری یا رمز عبور اشتباه است!');
-                return;
-            }
-
-            if(user.status === 'Pending') {
-                alert('⚠️ حساب شما هنوز توسط لیدر تایید نشده است.');
-                return;
-            }
-
+            currentUser = user;
             document.getElementById('authScreen').style.display = 'none';
             document.getElementById('mainPanel').style.display = 'block';
             document.getElementById('uNameDisp').innerText = user.username;
+            document.getElementById('roleBadge').innerText = user.role === 'Leader' ? 'لیدر کلن' : 'عضو رسمی';
+            document.getElementById('newsText').innerText = db.announcement;
 
             if(user.role === 'Leader') {
                 document.getElementById('adminSection').style.display = 'block';
-                renderAdmin();
+                document.getElementById('clearChatBtn').style.display = 'inline-block';
+                renderAdminTable();
             } else {
                 document.getElementById('memberSection').style.display = 'block';
             }
+
+            renderChats();
         }
 
-        function renderAdmin() {
+        function togglePassResetBox() {
+            let box = document.getElementById('passResetBox');
+            box.style.display = (box.style.display === 'none' || box.style.display === '') ? 'block' : 'none';
+        }
+
+        function changeMyPassword() {
+            let newPass = document.getElementById('newPasswordInput').value.trim();
+            if(!newPass) { alert('لطفاً رمز عبور جدید را وارد کنید.'); return; }
+
             let db = getDB();
-            let tbody = document.getElementById('memberTable');
-            tbody.innerHTML = '';
-
-            for(let idx = 0; idx < db.users.length; idx++) {
-                let m = db.users[idx];
-                let stText = m.status === 'Active' ? 'فعال' : 'در انتظار تایید';
-                let stClass = m.status === 'Active' ? 'badge-active' : 'badge-pending';
-
-                let actionBtn = '';
-                if(m.role !== 'Leader') {
-                    if(m.status === 'Pending') {
-                        actionBtn += '<button class="btn-green" style="padding:4px 8px; font-size:0.8rem; width:auto; margin-left:5px;" onclick="approveUser(' + idx + ')">تایید</button>';
-                    }
-                    actionBtn += '<button class="btn-red" style="padding:4px 8px; font-size:0.8rem; width:auto;" onclick="delUser(' + idx + ')">حذف</button>';
-                } else {
-                    actionBtn = '<span style="color:var(--muted)">مدیر کل</span>';
-                }
-
-                let row = '<tr>' +
-                    '<td><strong>' + m.username + '</strong></td>' +
-                    '<td><code style="background:#0f172a; padding:3px 6px; border-radius:4px; color:var(--green);">' + m.pass + '</code></td>' +
-                    '<td><span class="badge ' + stClass + '">' + stText + '</span></td>' +
-                    '<td>' + actionBtn + '</td>' +
-                '</tr>';
-
-                tbody.innerHTML += row;
+            let userObj = db.users.find(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
+            
+            if(userObj) {
+                userObj.pass = newPass;
+                currentUser.pass = newPass;
+                saveDB(db);
+                document.getElementById('newPasswordInput').value = '';
+                togglePassResetBox();
+                alert('🔑 رمز عبور شما با موفقیت تغییر یافت!');
+                if(currentUser.role === 'Leader') renderAdminTable();
             }
         }
 
-        function approveUser(idx) {
+        function renderAdminTable() {
+            let db = getDB();
+            let tbody = document.getElementById('memberTable');
+            let search = document.getElementById('searchInput').value.toLowerCase();
+            let filter = document.getElementById('filterStatus').value;
+
+            tbody.innerHTML = '';
+
+            document.getElementById('statTotal').innerText = db.users.length;
+            document.getElementById('statActive').innerText = db.users.filter(x => x.status === 'Active').length;
+            document.getElementById('statPending').innerText = db.users.filter(x => x.status === 'Pending').length;
+
+            db.users.forEach((m, idx) => {
+                if(search && !m.username.toLowerCase().includes(search)) return;
+                if(filter !== 'all' && m.status !== filter) return;
+
+                let stBadge = m.status === 'Active' ? 
+                    '<span class="badge badge-active">فعال</span>' : 
+                    '<span class="badge badge-pending">در انتظار تایید</span>';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${m.username}</strong></td>
+                        <td><code style="color:var(--text-muted); background:rgba(0,0,0,0.4); padding:3px 8px; border-radius:4px;">••••••••</code></td>
+                        <td>${m.role === 'Leader' ? '👑 لیدر' : 'عضو'}</td>
+                        <td>${stBadge}</td>
+                        <td>
+                            ${m.role !== 'Leader' && m.status === 'Pending' ? `<button class="btn btn-green" style="padding:4px 10px; font-size:0.75rem;" onclick="approve(${idx})">تایید حساب</button>` : ''}
+                            ${m.role !== 'Leader' ? `<button class="btn btn-red" style="padding:4px 10px; font-size:0.75rem; margin-right:4px;" onclick="delUser(${idx})">حذف</button>` : '<span style="color:var(--text-muted); font-size:0.8rem;">دسترسی کامل</span>'}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function approve(idx) {
             let db = getDB();
             db.users[idx].status = 'Active';
             saveDB(db);
-            renderAdmin();
-            alert('حساب کاربر تایید شد.');
+            renderAdminTable();
         }
 
         function delUser(idx) {
-            if(confirm('آیا از حذف این کاربر مطمئن هستید؟')) {
+            if(confirm('آیا از حذف این عضو مطمئن هستید؟')) {
                 let db = getDB();
                 db.users.splice(idx, 1);
                 saveDB(db);
-                renderAdmin();
+                renderAdminTable();
+            }
+        }
+
+        function updateAnnouncement() {
+            let txt = document.getElementById('newAnnounce').value.trim();
+            if(!txt) return;
+            let db = getDB();
+            db.announcement = txt;
+            saveDB(db);
+            document.getElementById('newsText').innerText = txt;
+            document.getElementById('newAnnounce').value = '';
+            alert('اطلاعیه کلن به‌روزرسانی شد.');
+        }
+
+        function addDirectMember() {
+            let u = document.getElementById('directUser').value.trim();
+            let p = document.getElementById('directPass').value.trim();
+            if(!u || !p) { alert('نام کاربری و رمز را وارد کنید.'); return; }
+
+            let db = getDB();
+            if(db.users.find(x => x.username.toLowerCase() === u.toLowerCase())) {
+                alert('این نام کاربری وجود دارد.'); return;
+            }
+
+            db.users.push({ username: u, pass: p, role: 'Member', status: 'Active' });
+            saveDB(db);
+            renderAdminTable();
+            document.getElementById('directUser').value = '';
+            document.getElementById('directPass').value = '';
+            alert('عضو جدید اضافه شد.');
+        }
+
+        function sendChat() {
+            let input = document.getElementById('chatInput');
+            let txt = input.value.trim();
+            if(!txt || !currentUser) return;
+
+            let db = getDB();
+            if(!db.chats) db.chats = [];
+
+            let now = new Date();
+            let timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+            db.chats.push({
+                user: currentUser.username,
+                role: currentUser.role,
+                text: txt,
+                time: timeStr
+            });
+
+            saveDB(db);
+            input.value = '';
+            renderChats();
+        }
+
+        function renderChats() {
+            let db = getDB();
+            let chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = '';
+
+            let chats = db.chats || [];
+            if(chats.length === 0) {
+                chatBox.innerHTML = '<div style="color:var(--text-muted); text-align:center; margin-top:100px;">هیچ پیامی هنوز ثبت نشده است. اولین پیام را بفرستید!</div>';
+                return;
+            }
+
+            chats.forEach(c => {
+                let isLeader = c.role === 'Leader';
+                let leaderClass = isLeader ? 'leader-msg' : '';
+                let leaderTag = isLeader ? 'leader-tag' : '';
+                let badge = isLeader ? ' 👑 (لیدر)' : '';
+
+                chatBox.innerHTML += `
+                    <div class="chat-item ${leaderClass}">
+                        <div class="chat-meta">
+                            <span class="chat-user ${leaderTag}">${c.user}${badge}</span>
+                            <span>${c.time}</span>
+                        </div>
+                        <div class="chat-text">${c.text}</div>
+                    </div>
+                `;
+            });
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function clearChat() {
+            if(confirm('آیا از پاک کردن کامل پیام‌های چت‌روم مطمئن هستید؟')) {
+                let db = getDB();
+                db.chats = [];
+                saveDB(db);
+                renderChats();
             }
         }
     </script>
