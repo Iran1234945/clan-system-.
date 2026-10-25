@@ -1,1 +1,190 @@
+𝓩, [03/08/1405 12:02 ب.ظ]
+<thead>
+                        <tr>
+                            <th>نام کاربری</th>
+                            <th>رمز عبور</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTable"></tbody>
+                </table>
+            </div>
+        </div>
 
+        <div id="memberSection" style="display:none; background:var(--card); padding:30px; border-radius:10px; border:1px solid var(--border); margin-top:20px; text-align:center;">
+            <h3>خوش آمدید عضو گرامی!</h3>
+            <p style="color:var(--muted); margin-top:10px;">حساب شما تایید شده و به سامانه دسترسی دارید.</p>
+        </div>
+    </div>
+
+    <script>
+        function switchMode(m) {
+            if(m === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('regForm').style.display = 'none';
+                document.getElementById('btnL').style.background = 'var(--blue)';
+                document.getElementById('btnR').style.background = 'var(--border)';
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('regForm').style.display = 'block';
+                document.getElementById('btnR').style.background = 'var(--blue)';
+                document.getElementById('btnL').style.background = 'var(--border)';
+            }
+        }
+
+        function registerSystem() {
+            let db = JSON.parse(localStorage.getItem('clan_db')) || {
+                users: [{ username: 'admin', pass: 'leader123', role: 'Leader', status: 'Active' }]
+            };
+            let u = document.getElementById('rUser').value.trim();
+            let p = document.getElementById('rPass').value.trim();
+            if(!u || !p) { alert('لطفاً نام کاربری و رمز عبور را پر کنید.'); return; }
+            if(db.users.find(x => x.username === u)) { alert('این نام کاربری قبلاً ثبت شده است.'); return; }
+            
+            db.users.push({ username: u, pass: p, role: 'Member', status: 'Pending' });
+            localStorage.setItem('clan_db', JSON.stringify(db));
+            alert('ثبت‌نام با موفقیت انجام شد! منتظر تایید لیدر بمانید.');
+            switchMode('login');
+            document.getElementById('rUser').value = '';
+            document.getElementById('rPass').value = '';
+        }
+
+        function loginSystem() {
+            let db = JSON.parse(localStorage.getItem('clan_db')) || {
+                users: [{ username: 'admin', pass: 'leader123', role: 'Leader', status: 'Active' }]
+            };
+            let u = document.getElementById('lUser').value.trim();
+            let p = document.getElementById('lPass').value.trim();
+            if(!u || !p) { alert('لطفاً نام کاربری و رمز عبور را وارد کنید.'); return; }
+
+            let user = db.users.find(x => x.username === u && x.pass === p);
+            if(!user) { alert('نام کاربری یا رمز عبور اشتباه است!'); return; }
+            if(user.status === 'Pending') { alert('⚠️ حساب شما هنوز توسط لیدر تایید نشده است.'); return; }
+
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainPanel').style.display = 'block';
+            document.getElementById('uNameDisp').innerText = user.username;
+
+            if(user.role === 'Leader') {
+                document.getElementById('adminSection').style.display = 'block';
+                renderAdmin();
+            } else {
+                document.getElementById('memberSection').style.display = 'block';
+            }
+        }
+
+        function renderAdmin() {
+            let db = JSON.parse(localStorage.getItem('clan_db'));
+            let tbody = document.getElementById('memberTable');
+
+𝓩, [03/08/1405 12:02 ب.ظ]
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه مدیریت کلن</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --red: #ef4444;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: #334155;
+        }
+        body { background: var(--bg); color: var(--text); font-family: Tahoma, sans-serif; margin: 0; padding: 20px; }
+        .box { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 10px; max-width: 400px; margin: 50px auto; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        input, button { width: 100%; padding: 10px; margin: 8px 0; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 5px; box-sizing: border-box; font-size: 0.95rem; }
+        button { background: var(--blue); color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #2563eb; }
+        .btn-green { background: var(--green); }
+        .btn-green:hover { background: #16a34a; }
+        .btn-red { background: var(--red); }
+        .btn-red:hover { background: #dc2626; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: right; }
+        th, td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: var(--bg); color: var(--muted); }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .badge-active { background: var(--green); color: white; }
+        .badge-pending { background: #f59e0b; color: black; }
+    </style>
+</head>
+<body>
+
+    <div id="authScreen" class="box">
+        <h2>سامانه کلن</h2>
+        <div style="display:flex; gap:5px; margin-bottom:15px;">
+            <button onclick="switchMode('login')" id="btnL" style="background:var(--blue)">ورود</button>
+            <button onclick="switchMode('reg')" id="btnR" style="background:var(--border)">ثبت‌نام</button>
+        </div>
+        
+        <div id="loginForm">
+            <input type="text" id="lUser" placeholder="نام کاربری">
+            <input type="password" id="lPass" placeholder="رمز عبور">
+            <button onclick="loginSystem()">ورود به سامانه</button>
+        </div>
+
+        <div id="regForm" style="display:none;">
+            <input type="text" id="rUser" placeholder="نام کاربری دلخواه">
+            <input type="password" id="rPass" placeholder="رمز عبور دلخواه">
+            <button class="btn-green" onclick="registerSystem()">ثبت‌نام (نیازمند تایید لیدر)</button>
+        </div>
+        
+        <p style="font-size:0.75rem; color:var(--muted); margin-top:15px;">ادمین پیش‌فرض: admin / leader123</p>
+    </div>
+
+    <div id="mainPanel" style="display:none; max-width:900px; margin:0 auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card); padding:15px; border-radius:10px; border:1px solid var(--border);">
+            <h2>خوش آمدید، <span id="uNameDisp" style="color:var(--blue)"></span></h2>
+            <button onclick="location.reload()" class="btn-red" style="width:auto; padding:8px 15px;">خروج</button>
+        </div>
+
+        <div id="adminSection" style="display:none; background:var(--card); padding:20px; border-radius:10px; border:1px solid var(--border); margin-top:20px;">
+            <h3>مدیریت اعضا و مشاهده رمزهای عبور (پنل لیدر)</h3>
+            <p style="color:var(--muted); font-size:0.85rem;">اعضای جدید در انتظار تایید هستند. پس از تایید، اجازه ورود پیدا می‌کنند.</p>
+            <div style="overflow-x:auto;">
+                <table>
+
+𝓩, [03/08/1405 12:02 ب.ظ]
+tbody.innerHTML = '';
+            db.users.forEach((m, idx) => {
+                let stText = m.status === 'Active' ? 'فعال' : 'در انتظار تایید';
+                let stClass = m.status === 'Active' ? 'badge-active' : 'badge-pending';
+                
+                tbody.innerHTML += 
+                    <tr>
+                        <td><strong>${m.username}</strong></td>
+                        <td><code style="background:#0f172a; padding:3px 6px; border-radius:4px; color:var(--green);">${m.pass}</code></td>
+                        <td><span class="badge ${stClass}">${stText}</span></td>
+                        <td>
+                            ${m.role !== 'Leader' && m.status === 'Pending' ? <button class="btn-green" style="padding:4px 8px; font-size:0.8rem; width:auto;" onclick="approveUser(${idx})">تایید حساب</button> : ''}
+                            ${m.role !== 'Leader' ? <button class="btn-red" style="padding:4px 8px; font-size:0.8rem; width:auto; margin-top:2px;" onclick="delUser(${idx})">حذف</button> : 'مدیر کل'}
+                        </td>
+                    </tr>
+                ;
+            });
+        }
+
+        function approveUser(idx) {
+            let db = JSON.parse(localStorage.getItem('clan_db'));
+            db.users[idx].status = 'Active';
+            localStorage.setItem('clan_db', JSON.stringify(db));
+            renderAdmin();
+            alert('حساب کاربر با موفقیت تایید شد.');
+        }
+
+        function delUser(idx) {
+            let db = JSON.parse(localStorage.getItem('clan_db'));
+            if(confirm('آیا از حذف این کاربر مطمئن هستید؟')) {
+                db.users.splice(idx, 1);
+                localStorage.setItem('clan_db', JSON.stringify(db));
+                renderAdmin();
+            }
+        }
+    </script>
+</body>
+</html>
