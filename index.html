@@ -1,9 +1,10 @@
+𝓩, [03/08/1405 11:23 ق.ظ]
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه جامع مدیریت کلن - تاکتیکال پنل</title>
+    <title>سامانه جامع مدیریت کلن - تاییدیه هوشمند</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -33,6 +34,72 @@
             flex-direction: column;
         }
 
+        #authOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .auth-card h2 {
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            border: none;
+            font-size: 1.3rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            background: #0f172a;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .auth-tab-btn.active {
+            background: var(--accent-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
         header {
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
@@ -53,29 +120,6 @@
         .logo-area h1 {
             font-size: 1.2rem;
             color: var(--accent-color);
-        }
-
-        .role-switcher {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #0f172a;
-            padding: 5px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .role-switcher select {
-            background: transparent;
-            color: var(--text-main);
-            border: none;
-            outline: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .role-switcher select option {
-            background: var(--card-bg);
         }
 
         .container {
@@ -112,7 +156,8 @@
             border-color: var(--accent-color);
         }
 
-        .panel-section {
+𝓩, [03/08/1405 11:23 ق.ظ]
+.panel-section {
             display: none;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -135,6 +180,7 @@
 
         .form-group {
             margin-bottom: 15px;
+            text-align: right;
         }
 
         label {
@@ -163,6 +209,7 @@
             cursor: pointer;
             font-size: 0.95rem;
             transition: 0.2s;
+            width: 100%;
         }
 
         button.btn:hover {
@@ -171,6 +218,10 @@
 
         button.btn-danger {
             background-color: var(--danger-color);
+        }
+
+        button.btn-success {
+            background-color: var(--success-color);
         }
 
         .table-container {
@@ -204,33 +255,8 @@
 
         .badge-leader { background: #8b5cf6; color: white; }
         .badge-member { background: #3b82f6; color: white; }
+        .badge-pending { background: var(--warning-color); color: #000; }
         .badge-banned { background: var(--danger-color); color: white; }
-
-        .chat-box {
-            background: #0f172a;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            height: 250px;
-            overflow-y: auto;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .chat-msg {
-            background: var(--card-bg);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            border-right: 3px solid var(--accent-color);
-        }
-
-        .chat-msg.blocked {
-            border-right-color: var(--danger-color);
-            background: rgba(239, 68, 68, 0.1);
-        }
 
         .alert-box {
             background: rgba(245, 158, 11, 0.1);
@@ -241,119 +267,238 @@
             margin-bottom: 15px;
             font-size: 0.9rem;
         }
+
+        .logout-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
 
+    <div id="authOverlay">
+        <div class="auth-card">
+            <h2>سامانه مدیریت کلن</h2>
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" onclick="switchAuthTab('login')">ورود به پنل</button>
+                <button class="auth-tab-btn" onclick="switchAuthTab('register')">ثبت‌نام عضو جدید</button>
+            </div>
+
+            <div id="loginSection" class="form-section active">
+                <div class="form-group">
+                    <label>نام کاربری:</label>
+                    <input type="text" id="loginUser" placeholder="نام کاربری...">
+                </div>
+                <div class="form-group">
+                    <label>رمز عبور:</label>
+                    <input type="password" id="loginPass" placeholder="رمز عبور...">
+                </div>
+                <button class="btn" onclick="handleLogin()">ورود</button>
+            </div>
+
+𝓩, [03/08/1405 11:23 ق.ظ]
+<div id="registerSection" class="form-section">
+                <div class="form-group">
+                    <label>نام کاربری دلخواه:</label>
+                    <input type="text" id="regUser" placeholder="مثلاً نام در بازی...">
+                </div>
+                <div class="form-group">
+                    <label>رمز عبور دلخواه:</label>
+                    <input type="password" id="regPass" placeholder="رمز عبور...">
+                </div>
+                <button class="btn btn-success" onclick="handleRegister()">ثبت‌نام (نیازمند تایید لیدر)</button>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 15px;">
+                * ادمین کلن با نام کاربری <strong>admin</strong> و رمز <strong>leader123</strong> وارد می‌شود.
+            </p>
+        </div>
+    </div>
+
     <header>
         <div class="logo-area">
             <span>🛡️</span>
-            <h1>سامانه مدیریت کلن (نسخه عملیاتی)</h1>
+            <h1>سامانه مدیریت کلن</h1>
         </div>
-        <div class="role-switcher">
-            <label for="userSelect" style="margin:0;">تغییر نمای کاربری:</label>
-            <select id="userSelect" onchange="switchUserRole()">
-                <option value="leader">مدیر کل (Leader)</option>
-                <option value="morteza">مرتضی (عضو)</option>
-                <option value="reza">رضا (عضو)</option>
-            </select>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span id="userRoleBadge" class="badge badge-member">نقش: کاربر</span>
+            <button class="logout-btn" onclick="logout()">خروج</button>
         </div>
     </header>
 
     <div class="container">
-        <!-- منوی تب‌ها -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('dashboard')">داشبورد و وضعیت</button>
-            <button class="tab-btn" onclick="switchTab('members')">مدیریت اعضا و بن</button>
-            <button class="tab-btn" onclick="switchTab('battles')">دستورات نبرد (آماده‌باش)</button>
-            <button class="tab-btn" onclick="switchTab('security')">امنیت و پیام‌های مشکوک</button>
+            <button class="tab-btn" id="tabMembersBtn" onclick="switchTab('members')">تایید اعضا و رمزها (مخصوص لیدر)</button>
+            <button class="tab-btn" onclick="switchTab('battles')">دستورات نبرد</button>
+            <button class="tab-btn" id="tabSecurityBtn" onclick="switchTab('security')">ضد هنگی و امنیت</button>
         </div>
 
-        <!-- تب داشبورد / پنل اختصاصی کاربر -->
         <div id="dashboard" class="panel-section active">
-            <h2>خوش آمدید، <span id="currentUserNameDisplay">مدیر کل</span></h2>
-            <div id="memberSpecificPanel" style="display: none;">
-                <div class="alert-box">
-                    🚨 <strong>اعلان‌های نبرد شما:</strong> هیچ ماموریت فعال جدیدی برای شما ثبت نشده است. منتظر دستور لیدر باشید.
-                </div>
+            <h2>خوش آمدید، <span id="welcomeName">کاربر گرامی</span></h2>
+            <div id="battleAlertBox" class="alert-box">
+                🚨 وضعیت نبرد: در حال حاضر هیچ دستور نبرد فعالی ثبت نشده است.
             </div>
             <p style="color: var(--text-muted); line-height: 1.6;">
-                این سامانه به صورت کاملاً ایزوله و بدون وابستگی به سرورهای خارجی روی بستر ابری شما فعال شده است. از تب‌های بالا برای مدیریت کلن، بررسی کدهای هنگی و ارسال دستورات نبرد استفاده کنید.
+                از طریق تب‌های بالا می‌توانید وضعیت نبردها و اطلاعیه‌های کلن را مشاهده کنید.
             </p>
         </div>
 
-        <!-- تب مدیریت اعضا و بن -->
         <div id="members" class="panel-section">
-            <h2>لیست اعضای کلن و سیستم بن</h2>
-            <div class="form-group">
-                <input type="text" id="newMemberName" placeholder="نام عضو جدید...">
-                <button class="btn" style="margin-top: 8px;" onclick="addMember()">افزودن عضو جدید</button>
-            </div>
+            <h2>تایید ثبت‌نام اعضا و مشاهده رمزها (پنل ادمین)</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">
+                اعضایی که تازه ثبت‌نام کرده‌اند در وضعیت «در انتظار تایید» هستند. ابتدا باید روی دکمه تایید بزنید تا اجازه ورود پیدا کنند.
+            </p>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>نام کاربر</th>
+                            <th>نام کاربری</th>
+                            <th>رمز عبور</th>
                             <th>نقش</th>
-                            <th>وضعیت</th>
+                            <th>وضعیت حساب</th>
                             <th>عملیات مدیریتی</th>
                         </tr>
                     </thead>
-                    <tbody id="membersTableBody">
-                        <!-- بارگذاری پویا -->
-                    </tbody>
+                    <tbody id="membersTableBody"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- تب دستورات نبرد -->
         <div id="battles" class="panel-section">
             <h2>سیستم فراخوان و آماده‌باش نبرد</h2>
-            <div id="leaderBattleControls">
+            <div id="leaderBattleControls" style="display: none; margin-bottom: 20px;">
                 <div class="form-group">
                     <label>کلن حریف:</label>
-                    <input type="text" id="opponentClan" placeholder="مثلاً کلن NX¹ یا YT">
+                    <input type="text" id="opponentClan" placeholder="مثلاً کلن NX¹">
                 </div>
                 <div class="form-group">
-                    <label>تاریخ و ساعت نبرد:</label>
+                    <label>زمان نبرد:</label>
                     <input type="text" id="battleTime" placeholder="مثلاً امشب ساعت ۲۱:۰۰">
                 </div>
-                <button class="btn" onclick="dispatchBattleCall()">ارسال دستور آماده‌باش به اعضا</button>
+                <button class="btn" onclick="dispatchBattleCall()" style="width: auto;">ارسال دستور نبرد به همه</button>
             </div>
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
-            <h3>تاریخچه نبردهای ابلاغ شده</h3>
-            <div id="battleHistory" style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
-                هنوز نبردی ثبت نشده است.
-            </div>
+            <h3>وضعیت نبردهای ابلاغ شده:</h3>
+            <div id="battleHistory" style="margin-top: 10px; color: var(--text-muted);">هنوز دستوری صادر نشده است.</div>
         </div>
 
-        <!-- تب امنیت و ضد اسپم -->
-        <div id="security" class="panel-section">
-            <h2>دفترچه یادداشت پیام‌های مشکوک و کدهای هنگی</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">
-                پیام‌هایی که حاوی کدهای هنگی، کاراکترهای مخفی یونیکد یا اسپم تخریبی بوده‌اند در این بخش ثبت می‌شوند.
-            </p>
+𝓩, [03/08/1405 11:23 ق.ظ]
+<div id="security" class="panel-section">
+            <h2>گزارش کدهای هنگی و امنیت چت (مخصوص لیدر)</h2>
             <div class="form-group">
-                <label>تست شبیه‌ساز ارسال پیام در چت کلن:</label>
-                <input type="text" id="testMessageInput" placeholder="متن پیام را برای تست فیلتر وارد کنید...">
-                <button class="btn btn-danger" style="margin-top: 8px;" onclick="testSendSpam()">ارسال و تست فیلتر هوشمند</button>
+                <label>تست فیلتر هوشمند پیام:</label>
+                <input type="text" id="testMessageInput" placeholder="متن پیام مشکوک...">
+                <button class="btn btn-danger" style="margin-top: 8px; width: auto;" onclick="testSendSpam()">بررسی و تست فیلتر</button>
             </div>
-            <h3>گزارش تخلفات و کدهای مسدود شده:</h3>
-            <div class="chat-box" id="suspiciousLogBox">
-                <div class="chat-msg">سیستم امنیتی فعال است. هیچ کد مخربی ثبت نشده.</div>
-            </div>
+            <div id="securityLogList" style="margin-top: 15px; color: var(--text-muted);">هیچ کد مخربی ثبت نشده است.</div>
         </div>
     </div>
 
     <script>
-        let clanData = {
+        let clanData = JSON.parse(localStorage.getItem('clanSystemData')) || {
             members: [
-                { id: 1, name: "مرتضی", role: "Member", status: "Active" },
-                { id: 2, name: "رضا", role: "Member", status: "Active" }
+                { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
             ],
             battles: [],
-            suspicious: []
+            securityLogs: []
         };
+
+        let currentUser = null;
+
+        function saveData() {
+            localStorage.setItem('clanSystemData', JSON.stringify(clanData));
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+            if(tab === 'login') {
+                document.querySelectorAll('.auth-tab-btn')[0].classList.add('active');
+                document.getElementById('loginSection').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab-btn')[1].classList.add('active');
+                document.getElementById('registerSection').classList.add('active');
+            }
+        }
+
+        function handleRegister() {
+            const user = document.getElementById('regUser').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+            if(!user || !pass) {
+                alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
+                return;
+            }
+            const exists = clanData.members.find(m => m.username === user);
+            if(exists) {
+                alert('این نام کاربری قبلاً ثبت شده است.');
+                return;
+            }
+            // ثبت‌نام با وضعیت در انتظار تایید (Pending)
+            clanData.members.push({ username: user, pass: pass, role: 'Member', status: 'Pending' });
+            saveData();
+            alert('ثبت‌نام شما با موفقیت انجام شد! لطفاً به لیدر اطلاع دهید تا حساب شما را تایید کند.');
+            switchAuthTab('login');
+            document.getElementById('regUser').value = '';
+            document.getElementById('regPass').value = '';
+        }
+
+        function handleLogin() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            
+            const member = clanData.members.find(m => m.username === user && m.pass === pass);
+            if(!member) {
+                alert('نام کاربری یا رمز عبور اشتباه است!');
+                return;
+            }
+            if(member.status === 'Pending') {
+                alert('⚠️ حساب کاربری شما هنوز توسط لیدر تایید نشده است. لطفاً منتظر تایید بمانید.');
+                return;
+            }
+            if(member.status === 'Banned') {
+                alert('❌ حساب کاربری شما مسدود (بن) شده است.');
+                return;
+            }
+
+            currentUser = member;
+            document.getElementById('authOverlay').style.display = 'none';
+            setupPermissions();
+        }
+
+        function logout() {
+            location.reload();
+        }
+
+        function setupPermissions() {
+            const roleBadge = document.getElementById('userRoleBadge');
+            const welcomeName = document.getElementById('welcomeName');
+            const tabMembersBtn = document.getElementById('tabMembersBtn');
+            const tabSecurityBtn = document.getElementById('tabSecurityBtn');
+            const leaderControls = document.getElementById('leaderBattleControls');
+
+𝓩, [03/08/1405 11:23 ق.ظ]
+welcomeName.innerText = currentUser.username;
+
+            if (currentUser.role === 'Leader') {
+                roleBadge.innerText = "نقش: لیدر کل (مدیر)";
+                roleBadge.className = "badge badge-leader";
+                tabMembersBtn.style.display = 'block';
+                tabSecurityBtn.style.display = 'block';
+                leaderControls.style.display = 'block';
+            } else {
+                roleBadge.innerText = "نقش: عضو کلن";
+                roleBadge.className = "badge badge-member";
+                tabMembersBtn.style.display = 'none';
+                tabSecurityBtn.style.display = 'none';
+                leaderControls.style.display = 'none';
+            }
+            renderMembers();
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.panel-section').forEach(el => el.classList.remove('active'));
@@ -362,94 +507,83 @@
             event.currentTarget.classList.add('active');
         }
 
-        function switchUserRole() {
-            const role = document.getElementById('userSelect').value;
-            const memberPanel = document.getElementById('memberSpecificPanel');
-            const leaderControls = document.getElementById('leaderBattleControls');
-            const nameDisplay = document.getElementById('currentUserNameDisplay');
-
-            if (role === 'leader') {
-                nameDisplay.innerText = "مدیر کل (Leader)";
-                memberPanel.style.display = 'none';
-                if(leaderControls) leaderControls.style.display = 'block';
-            } else {
-                nameDisplay.innerText = role === 'morteza' ? "مرتضی (عضو کلن)" : "رضا (عضو کلن)";
-                memberPanel.style.display = 'block';
-                if(leaderControls) leaderControls.style.display = 'none';
-            }
-        }
-
         function renderMembers() {
+            if(currentUser.role !== 'Leader') return;
             const tbody = document.getElementById('membersTableBody');
             tbody.innerHTML = '';
             clanData.members.forEach((m, index) => {
-                tbody.innerHTML += `
+                let statusBadge = 'badge-member';
+                let statusText = 'فعال';
+                if(m.status === 'Pending') { statusBadge = 'badge-pending'; statusText = 'در انتظار تایید'; }
+                if(m.status === 'Banned') { statusBadge = 'badge-banned'; statusText = 'مسدود شده'; }
+
+                tbody.innerHTML += 
                     <tr>
-                        <td>${m.name}</td>
-                        <td><span class="badge badge-member">${m.role}</span></td>
-                        <td><span class="badge ${m.status === 'Banned' ? 'badge-banned' : 'badge-member'}">${m.status}</span></td>
+                        <td><strong>${m.username}</strong></td>
+                        <td><code style="background:#0f172a; padding:4px 8px; border-radius:4px; color:var(--success-color);">${m.pass}</code></td>
+                        <td><span class="badge ${m.role === 'Leader' ? 'badge-leader' : 'badge-member'}">${m.role}</span></td>
+                        <td><span class="badge ${statusBadge}">${statusText}</span></td>
                         <td>
-                            <button class="btn btn-danger" style="padding: 4px 10px; font-size: 0.8rem;" onclick="toggleBan(${index})">
-                                ${m.status === 'Banned' ? 'رفع مسدودی' : 'بن (مسدود)'}
-                            </button>
+                            ${m.role !== 'Leader' ? 
+                                ${m.status === 'Pending' ? <button class="btn btn-success" style="padding: 4px 10px; width:auto; margin-bottom:4px;" onclick="approveMember(${index})">تایید حساب</button> : ''}
+                                <button class="btn btn-danger" style="padding: 4px 10px; width:auto;" onclick="toggleBan(${index})">
+                                    ${m.status === 'Banned' ? 'رفع مسدودی' : 'بن (مسدود)'}
+                                </ + button>
+                             : 'مدیر کل'}
                         </td>
                     </tr>
-                `;
+                ;
             });
         }
 
-        function addMember() {
-            const input = document.getElementById('newMemberName');
-            if(input.value.trim() !== '') {
-                clanData.members.push({ id: Date.now(), name: input.value, role: 'Member', status: 'Active' });
-                input.value = '';
-                renderMembers();
-            }
+        function approveMember(index) {
+            if(currentUser.role !== 'Leader') return;
+            clanData.members[index].status = 'Active';
+            saveData();
+            renderMembers();
+            alert('حساب کاربری تایید شد و اکنون اجازه ورود دارد.');
         }
 
         function toggleBan(index) {
+            if(currentUser.role !== 'Leader') return;
             clanData.members[index].status = clanData.members[index].status === 'Banned' ? 'Active' : 'Banned';
+            saveData();
             renderMembers();
         }
 
         function dispatchBattleCall() {
+            if(currentUser.role !== 'Leader') return;
             const opponent = document.getElementById('opponentClan').value;
             const time = document.getElementById('battleTime').value;
             if(!opponent || !time) {
-                alert('لطفاً اطلاعات حریف و زمان نبرد را کامل کنید.');
+                alert('لطفاً اطلاعات نبرد را کامل وارد کنید.');
                 return;
             }
             clanData.battles.push({ opponent, time });
-            
-            const history = document.getElementById('battleHistory');
-            history.innerHTML = clanData.battles.map(b => `⚠️ نبرد پیش‌رو با <strong>${b.opponent}</strong> در تاریخ: ${b.time}`).join('<br>');
-            
-            document.getElementById('memberSpecificPanel').innerHTML = `
-                <div class="alert-box" style="background: rgba(239, 68, 68, 0.1); border-color: var(--danger-color); color: var(--danger-color);">
-                    🚨 <strong>فراخوان فوری نبرد!</strong> شما با کلن <strong>${opponent}</strong> در زمان <strong>${time}</strong> مسابقه دارید. آماده باشید!
-                </div>
-            `;
-            alert('دستور آماده‌باش نبرد با موفقیت به پنل تمامی اعضا ارسال شد.');
+
+𝓩, [03/08/1405 11:23 ق.ظ]
+saveData();
+            document.getElementById('battleHistory').innerHTML = ⚠️ نبرد ثبت شده: با کلن <strong>${opponent}</strong> در ساعت ${time};
+            document.getElementById('battleAlertBox').innerHTML = 🚨 <strong>فراخوان فوری نبرد!</strong> مسابقه با کلن <strong>${opponent}</strong> در زمان <strong>${time}</strong>.;
+            alert('دستور نبرد با موفقیت به پنل تمامی اعضا ارسال شد.');
         }
 
         function testSendSpam() {
+            if(currentUser.role !== 'Leader') return;
             const text = document.getElementById('testMessageInput').value;
             if(!text) return;
-            
-            const isHangCode = text.length > 100 || /[\u200b-\u200d\u200e\u200f]/.test(text) || /(.)\1{15,}/.test(text);
-            
-            const logBox = document.getElementById('suspiciousLogBox');
-            if(isHangCode) {
-                clanData.suspicious.push({ text: text.substring(0, 50), reason: "کد هنگی / کاراکتر مخفی یونیکد" });
-                logBox.innerHTML = clanData.suspicious.map(s => `<div class="chat-msg blocked">❌ <strong>کد هنگی مسدود شد:</strong> ${s.text} (${s.reason})</div>`).join('');
-                alert('هشدار امنیتی: پیام ارسالی به عنوان کد هنگی شناسایی و بلاک شد!');
+            const isHang = text.length > 100 || /[\u200b-\u200d]/.test(text);
+            const logBox = document.getElementById('securityLogList');
+            if(isHang) {
+                clanData.securityLogs.push(text);
+                saveData();
+                logBox.innerHTML = clanData.securityLogs.map(l => <div style="color:var(--danger-color);">❌ کد هنگی مسدود شد: ${l}</div>).join('');
+                alert('کد هنگی شناسایی و مسدود شد!');
             } else {
-                logBox.innerHTML += `<div class="chat-msg">✅ پیام عادی ثبت شد: ${text}</div>`;
+                logBox.innerHTML = <div style="color:var(--success-color);">✅ پیام عادی و سالم است.</div>;
             }
             document.getElementById('testMessageInput').value = '';
         }
-
-        renderMembers();
     </script>
 </body>
 </html>
