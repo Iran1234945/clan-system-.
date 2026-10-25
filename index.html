@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>سامانه مدیریت کلن ALLIANCE US</title>
+  <title>سامانه مدیریت کلن ALLIANCE US ⚡️ Pro Max</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.net/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
     
@@ -13,7 +14,8 @@
       --primary-neon: #6366f1;
       --secondary-neon: #a855f7;
       --accent-gold: #f59e0b;
-      --bg-dark: #090d16;
+      --accent-cyan: #06b6d4;
+      --bg-dark: #05070f;
     }
 
     body {
@@ -23,47 +25,102 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* انیمیشن پس‌زمینه نئونی */
+    .glow-bg {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(45deg, var(--primary-neon), var(--secondary-neon));
+      filter: blur(150px);
+      border-radius: 50%;
+      z-index: -1;
+      animation: pulseGlow 8s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+      100% { transform: translate(100px, 100px) scale(1.3); opacity: 0.8; }
     }
 
     .navbar {
-      background: rgba(15, 23, 42, 0.85) !important;
-      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.75) !important;
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.5);
     }
 
     .glass-card {
-      background: rgba(30, 41, 59, 0.65);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(30, 41, 59, 0.55);
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 15px 50px rgba(99, 102, 241, 0.2);
+    }
+
+    /* کارت ورود اختصاصی سینمایی */
+    .auth-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent, var(--primary-neon), transparent 30%);
+      animation: rotateBorder 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotateBorder {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .auth-inner {
+      background: rgba(15, 23, 42, 0.95);
       border-radius: 18px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
     }
 
     .stat-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      border-radius: 14px;
-      padding: 15px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 16px;
+      padding: 18px;
       transition: all 0.3s ease;
     }
     .stat-card:hover {
-      border-color: var(--primary-neon);
-      transform: translateY(-3px);
+      border-color: var(--accent-cyan);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25);
     }
 
     .form-control, .form-select {
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.15);
       color: #fff;
-      border-radius: 10px;
+      border-radius: 12px;
+      padding: 12px;
     }
 
     .form-control:focus, .form-select:focus {
       background: rgba(15, 23, 42, 0.95);
       color: #fff;
-      border-color: var(--primary-neon);
-      box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
     }
 
     .btn-custom {
@@ -71,35 +128,36 @@
       border: none;
       color: white;
       font-weight: 700;
-      border-radius: 10px;
+      border-radius: 12px;
+      padding: 12px;
       transition: all 0.3s ease;
     }
 
     .btn-custom:hover {
       background: linear-gradient(45deg, #4f46e5, #7c3aed);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 25px rgba(99, 102, 241, 0.6);
       color: white;
     }
 
     .chat-box {
-      height: 400px;
+      height: 420px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding: 15px;
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 14px;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .chat-bubble {
       max-width: 80%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.92rem;
-      position: relative;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .chat-me {
@@ -111,7 +169,7 @@
 
     .chat-other {
       align-self: flex-end;
-      background: rgba(51, 65, 85, 0.9);
+      background: rgba(51, 65, 85, 0.85);
       color: white;
       border-bottom-left-radius: 2px;
     }
@@ -120,46 +178,60 @@
       align-self: center;
       background: linear-gradient(135deg, #059669, #10b981);
       color: white;
-      border-radius: 12px;
+      border-radius: 14px;
       max-width: 90%;
       text-align: center;
     }
 
-    .table {
-      color: #cbd5e1;
-    }
-
-    .table-dark {
-      --bs-table-bg: rgba(15, 23, 42, 0.6);
-    }
-
-    .badge-status {
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 20px;
-    }
-
-    .announcement-box {
-      background: linear-gradient(45deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.25));
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      border-radius: 12px;
-      padding: 15px;
-    }
-
     .pass-text {
       font-family: monospace;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       color: #38bdf8;
       font-weight: bold;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .ticker {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker 25s linear infinite;
+    }
+
+    @keyframes ticker {
+      0% { transform: translate3d(100%, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    .quick-reaction {
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: transform 0.2s;
+    }
+    .quick-reaction:hover {
+      transform: scale(1.3);
     }
   </style>
 </head>
 <body>
 
-  <!-- هدر و ناوبری -->
+  <div class="glow-bg"></div>
+
+  <!-- هدر ناوبری -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold fs-4 text-warning" href="#">
+      <a class="navbar-brand fw-bold fs-3 text-warning animate__animated animate__pulse animate__infinite" href="#">
         ⚡️ ALLIANCE US ⚡️
       </a>
       <div id="userInfo" class="d-flex align-items-center gap-3"></div>
@@ -168,106 +240,120 @@
 
   <div class="container my-4 flex-grow-1">
     
-    <!-- بخش ورود و ثبت نام -->
-    <div id="authSection" class="row justify-content-center">
+    <!-- بخش ورود و ثبت نام با انیمیشن فوق پیشرفته -->
+    <div id="authSection" class="row justify-content-center animate__animated animate__zoomIn">
       <div class="col-md-6 col-lg-5">
-        <div class="glass-card p-4">
-          <ul class="nav nav-pills nav-justified mb-4" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active text-white fw-bold" id="tab-login" data-bs-toggle="pill" data-bs-target="#pills-login" type="button">ورود اعضا</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link text-white fw-bold" id="tab-register" data-bs-toggle="pill" data-bs-target="#pills-register" type="button">ثبت نام جدید</button>
-            </li>
-          </ul>
+        <div class="auth-card p-1">
+          <div class="auth-inner p-4">
+            <h3 class="text-center text-warning fw-bold mb-4"><i class="fa-solid fa-shield-halved me-2"></i>ورود به قلمرو کلن</h3>
+            <ul class="nav nav-pills nav-justified mb-4" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active text-white fw-bold" id="tab-login" data-bs-toggle="pill" data-bs-target="#pills-login">ورود اعضا</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link text-white fw-bold" id="tab-register" data-bs-toggle="pill" data-bs-target="#pills-register">ثبت نام جدید</button>
+              </li>
+            </ul>
 
-          <div class="tab-content" id="pills-tabContent">
-            <!-- فرم ورود -->
-            <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
-              <form id="loginForm">
-                <div class="mb-3">
-                  <label class="form-label">نام کاربری</label>
-                  <input type="text" id="loginUser" class="form-control" placeholder="نام کاربری خود را وارد کنید" required autocomplete="off">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">رمز عبور</label>
-                  <input type="password" id="loginPass" class="form-control" placeholder="رمز عبور" required autocomplete="off">
-                </div>
-                <button type="submit" class="btn btn-custom w-100 py-2">ورود به سامانه</button>
-              </form>
-            </div>
+            <div class="tab-content">
+              <!-- فرم ورود -->
+              <div class="tab-pane fade show active" id="pills-login">
+                <form id="loginForm">
+                  <div class="mb-3">
+                    <label class="form-label text-light">نام کاربری</label>
+                    <input type="text" id="loginUser" class="form-control" placeholder="نام کاربری..." required autocomplete="off">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label text-light">رمز عبور</label>
+                    <input type="password" id="loginPass" class="form-control" placeholder="رمز عبور..." required autocomplete="off">
+                  </div>
+                  <button type="submit" class="btn btn-custom w-100 mt-2">ورود به سامانه 🚀</button>
+                </form>
+              </div>
 
-            <!-- فرم ثبت نام -->
-            <div class="tab-pane fade" id="pills-register" role="tabpanel">
-              <form id="registerForm">
-                <div class="mb-3">
-                  <label class="form-label">نام و نام خانوادگی / نام در بازی</label>
-                  <input type="text" id="regName" class="form-control" placeholder="مثال: علی - آریا" required autocomplete="off">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">نام کاربری جهت ورود</label>
-                  <input type="text" id="regUser" class="form-control" placeholder="حروف انگلیسی" required autocomplete="off">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">رمز عبور</label>
-                  <input type="password" id="regPass" class="form-control" placeholder="رمز عبور دلخواه" required autocomplete="off">
-                </div>
-                <button type="submit" class="btn btn-custom w-100 py-2">ارسال درخواست عضویت</button>
-              </form>
+              <!-- فرم ثبت نام -->
+              <div class="tab-pane fade" id="pills-register">
+                <form id="registerForm">
+                  <div class="mb-3">
+                    <label class="form-label text-light">نام کامل / اسم داخل بازی</label>
+                    <input type="text" id="regName" class="form-control" placeholder="مثال: علی - Destroyer" required autocomplete="off">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label text-light">نام کاربری جهت ورود</label>
+                    <input type="text" id="regUser" class="form-control" placeholder="نام کاربری دلخواه..." required autocomplete="off">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label text-light">رمز عبور</label>
+                    <input type="password" id="regPass" class="form-control" placeholder="رمز عبور..." required autocomplete="off">
+                  </div>
+                  <button type="submit" class="btn btn-custom w-100 mt-2">ارسال درخواست عضویت ✨</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- داشبورد اصلی پس از ورود -->
-    <div id="mainDashboard" class="d-none">
+    <!-- داشبورد اصلی لیدر و اعضا -->
+    <div id="mainDashboard" class="d-none animate__animated animate__fadeIn">
       
-      <!-- آمار کلن -->
+      <!-- آمارگیر فوق حرفه‌ای کلن -->
       <div class="row g-3 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3 col-6">
           <div class="stat-card d-flex align-items-center justify-content-between">
             <div>
-              <small class="text-muted d-block">کل اعضا</small>
-              <h4 id="statTotal" class="mb-0 fw-bold text-info">0</h4>
+              <small class="text-muted d-block">اعضای کلن</small>
+              <h3 id="statTotal" class="mb-0 fw-bold text-info">0</h3>
             </div>
-            <i class="fa-solid fa-users fs-2 text-info opacity-50"></i>
+            <i class="fa-solid fa-users-viewfinder fs-1 text-info opacity-50"></i>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-6">
           <div class="stat-card d-flex align-items-center justify-content-between">
             <div>
               <small class="text-muted d-block">در انتظار تایید</small>
-              <h4 id="statPending" class="mb-0 fw-bold text-warning">0</h4>
+              <h3 id="statPending" class="mb-0 fw-bold text-warning">0</h3>
             </div>
-            <i class="fa-solid fa-clock fs-2 text-warning opacity-50"></i>
+            <i class="fa-solid fa-user-clock fs-1 text-warning opacity-50"></i>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-6">
           <div class="stat-card d-flex align-items-center justify-content-between">
             <div>
-              <small class="text-muted d-block">وضعیت سرور</small>
-              <h4 class="mb-0 fw-bold text-success">آنلاین ⚡️</h4>
+              <small class="text-muted d-block">مدیران فعال</small>
+              <h3 id="statAdmins" class="mb-0 fw-bold text-secondary">0</h3>
             </div>
-            <i class="fa-solid fa-server fs-2 text-success opacity-50"></i>
+            <i class="fa-solid fa-user-shield fs-1 text-secondary opacity-50"></i>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card d-flex align-items-center justify-content-between">
+            <div>
+              <small class="text-muted d-block">سرور فایربیس</small>
+              <h3 class="mb-0 fw-bold text-success">آنلاین ⚡️</h3>
+            </div>
+            <i class="fa-solid fa-bolt fs-1 text-success opacity-50"></i>
           </div>
         </div>
       </div>
 
-      <!-- اطلاعیه کلن -->
-      <div class="announcement-box mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <h6 class="mb-0 text-warning fw-bold"><i class="fa-solid fa-bullhorn me-2"></i>اطلاعیه و قوانین کلن</h6>
-          <small id="announcementTime" class="text-muted"></small>
+      <!-- نوار اطلاعیه زنده متحرک -->
+      <div class="ticker-wrap mb-4">
+        <div class="d-flex align-items-center">
+          <span class="badge bg-warning text-dark me-2 px-3 py-2 fw-bold"><i class="fa-solid fa-bullhorn me-1"></i> اطلاعیه</span>
+          <div class="ticker text-light fw-bold" id="announcementText">خوش آمدید به سامانه پیشرفته مدیریت کلن ALLIANCE US!</div>
         </div>
-        <p id="announcementText" class="mb-0 text-light fs-6">در حال حاضر اطلاعیه جدیدی ثبت نشده است.</p>
       </div>
 
-      <!-- پنل لیدر / ادمین -->
+      <!-- پنل اختصاصی لیدر (مشاهده نام کاربری و رمز عبور) -->
       <div id="adminPanel" class="glass-card p-4 mb-4 d-none">
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="mb-0 text-warning"><i class="fa-solid fa-user-shield me-2"></i>پنل مدیریت لیدر کلن</h4>
-          <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#announcementModal">ثبت اطلاعیه جدید</button>
+          <h4 class="mb-0 text-warning"><i class="fa-solid fa-crown me-2"></i>پنل مدیریت ویژه لیدر کلن</h4>
+          <div>
+            <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#announcementModal">ثبت اطلاعیه</button>
+            <button id="clearChatBtn" class="btn btn-sm btn-outline-danger">پاکسازی چت</button>
+          </div>
         </div>
         
         <div class="table-responsive">
@@ -276,7 +362,7 @@
               <tr>
                 <th>نام کاربر</th>
                 <th>نام کاربری</th>
-                <th>رمز عبور</th>
+                <th>رمز عبور (دسترسی لیدر)</th>
                 <th>مقام</th>
                 <th>وضعیت</th>
                 <th>عملیات</th>
@@ -287,12 +373,21 @@
         </div>
       </div>
 
-      <!-- چت‌روم آنلاین زنده -->
+      <!-- چت‌روم هوشمند زنده -->
       <div class="glass-card p-4">
-        <h4 class="mb-3"><i class="fa-solid fa-comments me-2 text-info"></i>چت‌روم زنده کلن ALLIANCE US</h4>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="mb-0 text-info"><i class="fa-solid fa-comments me-2"></i>چت‌روم زنده و هوشمند کلن</h4>
+          <div class="d-flex gap-2">
+            <span class="quick-reaction" onclick="sendEmoji('👍')">👍</span>
+            <span class="quick-reaction" onclick="sendEmoji('🔥')">🔥</span>
+            <span class="quick-reaction" onclick="sendEmoji('⚔️')">⚔️</span>
+            <span class="quick-reaction" onclick="sendEmoji('👑')">👑</span>
+            <span class="quick-reaction" onclick="sendEmoji('🏆')">🏆</span>
+          </div>
+        </div>
         <div id="chatBox" class="chat-box mb-3"></div>
         <form id="chatForm" class="d-flex gap-2">
-          <input type="text" id="chatInput" class="form-control" placeholder="پیام خود را بنویسید..." autocomplete="off" required>
+          <input type="text" id="chatInput" class="form-control" placeholder="پیام خود را بنویسید (ربات هوشمند پاسخگوست)..." autocomplete="off" required>
           <button type="submit" class="btn btn-custom px-4"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
       </div>
@@ -301,29 +396,29 @@
 
   </div>
 
-  <!-- مدال ثبت اطلاعیه -->
+  <!-- مدال اطلاعیه -->
   <div class="modal fade" id="announcementModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content glass-card text-white">
         <div class="modal-header border-bottom-0">
-          <h5 class="modal-title">ارسال اطلاعیه سراسری</h5>
+          <h5 class="modal-title">ثبت اطلاعیه سراسری</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <textarea id="newAnnouncementInput" class="form-control" rows="4" placeholder="متن اطلاعیه یا قوانین جدید کلن را بنویسید..."></textarea>
+          <textarea id="newAnnouncementInput" class="form-control" rows="3" placeholder="متن جدید اطلاعیه کلن..."></textarea>
         </div>
         <div class="modal-footer border-top-0">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-          <button type="button" id="saveAnnouncementBtn" class="btn btn-custom" data-bs-dismiss="modal">انتشار اطلاعیه</button>
+          <button type="button" id="saveAnnouncementBtn" class="btn btn-custom" data-bs-dismiss="modal">انتشار</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- اسکریپت فایربیس و منطق برنامه‌نویسی -->
+  <!-- اسکریپت اصلی فایربیس و مدیریت سیستم -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, get, child, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, set, get, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD25Qf8dy99c3xaE_M-cGBUTlAlcweUIiI",
@@ -374,7 +469,7 @@
           role: "member",
           status: "pending"
         });
-        alert("درخواست ثبت‌نام شما فرستاده شد. پس از تایید لیدر می‌توانید وارد شوید.");
+        alert("درخواست عضویت فرستاده شد! منتظر تایید لیدر باشید.");
         document.getElementById('registerForm').reset();
       }
     });
@@ -410,7 +505,7 @@
 
       const roleBadge = currentUser.role === 'admin' ? '👑 لیدر' : (currentUser.role === 'co-leader' ? '⭐ معاون' : '⚔️ عضو');
       document.getElementById('userInfo').innerHTML = `
-        <span class="text-light"><i class="fa-solid fa-user me-1"></i>${currentUser.name} (${roleBadge})</span>
+        <span class="text-light fw-bold"><i class="fa-solid fa-user-ninja me-1 text-warning"></i>${currentUser.name} (${roleBadge})</span>
         <button id="logoutBtn" class="btn btn-sm btn-outline-danger">خروج</button>
       `;
 
@@ -431,9 +526,7 @@
     function listenToAnnouncements() {
       onValue(ref(db, 'announcement'), (snapshot) => {
         if (snapshot.exists()) {
-          const data = snapshot.val();
-          document.getElementById('announcementText').innerText = data.text;
-          document.getElementById('announcementTime').innerText = data.time || '';
+          document.getElementById('announcementText').innerText = snapshot.val().text;
         }
       });
     }
@@ -441,11 +534,7 @@
     document.getElementById('saveAnnouncementBtn').addEventListener('click', async () => {
       const text = document.getElementById('newAnnouncementInput').value.trim();
       if (text) {
-        const timeStr = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-        await set(ref(db, 'announcement'), {
-          text: text,
-          time: timeStr
-        });
+        await set(ref(db, 'announcement'), { text: text });
         document.getElementById('newAnnouncementInput').value = '';
       }
     });
@@ -454,21 +543,21 @@
       onValue(ref(db, 'users'), (snapshot) => {
         if (snapshot.exists()) {
           const users = snapshot.val();
-          let total = 0;
-          let pending = 0;
+          let total = 0, pending = 0, admins = 0;
           for (let key in users) {
             total++;
             if (users[key].status === 'pending') pending++;
+            if (users[key].role === 'admin' || users[key].role === 'co-leader') admins++;
           }
           document.getElementById('statTotal').innerText = total;
           document.getElementById('statPending').innerText = pending;
+          document.getElementById('statAdmins').innerText = admins;
         }
       });
     }
 
     function listenToMembers() {
-      const usersRef = ref(db, 'users');
-      onValue(usersRef, (snapshot) => {
+      onValue(ref(db, 'users'), (snapshot) => {
         const tbody = document.getElementById('membersTable');
         tbody.innerHTML = '';
         if (snapshot.exists()) {
@@ -479,7 +568,7 @@
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-              <td>${u.name}</td>
+              <td class="fw-bold">${u.name}</td>
               <td>${u.username}</td>
               <td><span class="pass-text">${u.pass}</span></td>
               <td>
@@ -518,9 +607,14 @@
       }
     };
 
+    document.getElementById('clearChatBtn').addEventListener('click', async () => {
+      if(confirm('آیا مطمئنید که کل پیام‌های چت‌روم پاکسازی شوند؟')) {
+        await remove(ref(db, 'messages'));
+      }
+    });
+
     function listenToChat() {
-      const messagesRef = ref(db, 'messages');
-      onValue(messagesRef, (snapshot) => {
+      onValue(ref(db, 'messages'), (snapshot) => {
         const chatBox = document.getElementById('chatBox');
         chatBox.innerHTML = '';
         if (snapshot.exists()) {
@@ -532,10 +626,10 @@
             
             const div = document.createElement('div');
             if (isBot) {
-              div.className = 'chat-bubble chat-bot p-2 my-1';
+              div.className = 'chat-bubble chat-bot p-2 my-1 animate__animated animate__fadeIn';
               div.innerHTML = `<small class="d-block fw-bold opacity-75">🤖 ربات ALLIANCE AI</small>${m.text}`;
             } else {
-              div.className = `chat-bubble ${isMe ? 'chat-me' : 'chat-other'}`;
+              div.className = `chat-bubble ${isMe ? 'chat-me' : 'chat-other'} animate__animated animate__fadeInUp`;
               const badge = m.role === 'admin' ? '👑' : (m.role === 'co-leader' ? '⭐' : '⚔️');
               div.innerHTML = `<small class="d-block fw-bold opacity-75">${badge} ${m.name}</small>${m.text}`;
             }
@@ -545,6 +639,10 @@
         }
       });
     }
+
+    window.sendEmoji = (emoji) => {
+      document.getElementById('chatInput').value += emoji;
+    };
 
     document.getElementById('chatForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -564,16 +662,15 @@
         
         input.value = '';
 
-        // پاسخ هوشمند ربات کلن
         setTimeout(async () => {
           const lower = text.toLowerCase();
           let botReply = "";
           if (lower.includes("سلام") || lower.includes("درود")) {
-            botReply = `سلام ${currentUser.name} عزیز! به کلن ALLIANCE US خوش آمدی ⚔️`;
+            botReply = `سلام ${currentUser.name} عزیز! خوش آمدی به ALLIANCE US ⚔️`;
           } else if (lower.includes("قوانین")) {
-            botReply = "احترام به اعضا و حضور فعال در وارها الزامی است! 🛡️";
+            botReply = "احترام متقابل و شرکت فعال در وارها اصلی‌ترین قانون ماست! 🛡️";
           } else if (lower.includes("لیدر")) {
-            botReply = "لیدر کلن به زودی پیام شما را پاسخ خواهد داد 👑";
+            botReply = "لیدر به زودی چت را بررسی و پاسخ خواهد داد 👑";
           }
 
           if (botReply) {
@@ -585,7 +682,7 @@
               timestamp: Date.now()
             });
           }
-        }, 800);
+        }, 600);
       }
     });
   </script>
