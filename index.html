@@ -1,16 +1,15 @@
-𝓩, [03/08/1405 11:28 ق.ظ]
+𝓩, [03/08/1405 11:33 ق.ظ]
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه جامع مدیریت کلن - ورود امن</title>
+    <title>سامانه مدیریت کلن</title>
     <style>
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --accent-color: #3b82f6;
-            --accent-hover: #2563eb;
             --danger-color: #ef4444;
             --success-color: #22c55e;
             --warning-color: #f59e0b;
@@ -18,509 +17,207 @@
             --text-muted: #94a3b8;
             --border-color: #334155;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Tahoma, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        
         #authOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 15px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 15px;
         }
-
         .auth-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 25px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: var(--card-bg); border: 1px solid var(--border-color); padding: 25px;
+            border-radius: 12px; width: 100%; max-width: 400px; text-align: center;
         }
-
-        .auth-card h2 {
-            margin-bottom: 15px;
-            color: var(--accent-color);
-            border: none;
-            font-size: 1.3rem;
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 15px;
-            background: #0f172a;
-            padding: 4px;
-            border-radius: 6px;
-        }
-
-        .auth-tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 8px;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-
-        .auth-tab-btn.active {
-            background: var(--accent-color);
-            color: white;
-            font-weight: bold;
-        }
-
-        .form-section {
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
-        }
-
-        header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-area h1 {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
-            width: 100%;
-            flex: 1;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
-        .tab-btn {
-            background-color: var(--card-bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            white-space: nowrap;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            background-color: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-        }
-
-𝓩, [03/08/1405 11:28 ق.ظ]
-.panel-section {
-            display: none;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .panel-section.active {
-            display: block;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--text-main);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: right;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            background: #0f172a;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-        }
-
-        button.btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: 0.2s;
-            width: 100%;
-        }
-
-        button.btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        button.btn-danger {
-            background-color: var(--danger-color);
-        }
-
-        button.btn-success {
-            background-color: var(--success-color);
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            text-align: right;
-        }
-
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
-
-        th {
-            color: var(--text-muted);
-            background: #0f172a;
-        }
-
-        .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
+        .auth-card h2 { margin-bottom: 15px; color: var(--accent-color); }
+        .auth-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: #0f172a; padding: 4px; border-radius: 6px; }
+        .auth-tab-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 8px; cursor: pointer; border-radius: 4px; }
+        .auth-tab-btn.active { background: var(--accent-color); color: white; font-weight: bold; }
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+        
+        header { background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; width: 100%; flex: 1; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; }
+        .tab-btn { background-color: var(--card-bg); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .tab-btn.active { background-color: var(--accent-color); color: white; }
+        .panel-section { display: none; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .panel-section.active { display: block; }
+        
+        .form-group { margin-bottom: 15px; text-align: right; }
+        label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted); }
+        input { width: 100%; padding: 10px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); }
+        button.btn { background-color: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 5px; }
+        button.btn-success { background-color: var(--success-color); }
+        button.btn-danger { background-color: var(--danger-color); }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; text-align: right; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        th { color: var(--text-muted); background: #0f172a; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
         .badge-leader { background: #8b5cf6; color: white; }
         .badge-member { background: #3b82f6; color: white; }
         .badge-pending { background: var(--warning-color); color: #000; }
         .badge-banned { background: var(--danger-color); color: white; }
-
-        .alert-box {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--warning-color);
-            color: var(--warning-color);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        .logout-btn {
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
     </style>
 </head>
 <body>
 
-    <div id="authOverlay">
+𝓩, [03/08/1405 11:33 ق.ظ]
+<div id="authOverlay">
         <div class="auth-card">
-            <h2>سامانه مدیریت کلن</h2>
+            <h2>سامانه کلن</h2>
             <div class="auth-tabs">
-                <button class="auth-tab-btn active" onclick="switchAuthTab('login')">ورود به پنل</button>
-                <button class="auth-tab-btn" onclick="switchAuthTab('register')">ثبت‌نام عضو جدید</button>
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">ورود</button>
+                <button type="button" class="auth-tab-btn" id="tabRegBtn" onclick="switchAuthTab('register')">ثبت‌نام</button>
             </div>
 
             <div id="loginSection" class="form-section active">
                 <div class="form-group">
                     <label>نام کاربری:</label>
-                    <input type="text" id="loginUser" placeholder="نام کاربری...">
+                    <input type="text" id="loginUser">
                 </div>
                 <div class="form-group">
                     <label>رمز عبور:</label>
-                    <input type="password" id="loginPass" placeholder="رمز عبور...">
+                    <input type="password" id="loginPass">
                 </div>
-                <button class="btn" onclick="handleLogin()">ورود</button>
+                <button type="button" class="btn" onclick="handleLogin()">ورود به پنل</button>
             </div>
 
-𝓩, [03/08/1405 11:28 ق.ظ]
-<div id="registerSection" class="form-section">
+            <div id="registerSection" class="form-section">
                 <div class="form-group">
                     <label>نام کاربری دلخواه:</label>
-                    <input type="text" id="regUser" placeholder="مثلاً نام در بازی...">
+                    <input type="text" id="regUser">
                 </div>
                 <div class="form-group">
                     <label>رمز عبور دلخواه:</label>
-                    <input type="password" id="regPass" placeholder="رمز عبور...">
+                    <input type="password" id="regPass">
                 </div>
-                <button class="btn btn-success" onclick="handleRegister()">ثبت‌نام (نیازمند تایید لیدر)</button>
+                <button type="button" class="btn btn-success" onclick="handleRegister()">ثبت‌نام</button>
             </div>
             
-            <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 15px;">
-                * ادمین کلن با نام کاربری <strong>admin</strong> و رمز <strong>leader123</strong> وارد می‌شود.
-            </p>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 15px;">ادمین: admin / leader123</p>
         </div>
     </div>
 
     <header>
-        <div class="logo-area">
-            <span>🛡️</span>
-            <h1>سامانه مدیریت کلن</h1>
-        </div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span id="userRoleBadge" class="badge badge-member">نقش: کاربر</span>
-            <button class="logout-btn" onclick="logout()">خروج</button>
-        </div>
+        <h1>سامانه مدیریت کلن</h1>
+        <button type="button" class="btn btn-danger" style="width: auto; padding: 6px 12px;" onclick="location.reload()">خروج</button>
     </header>
 
     <div class="container">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('dashboard')">داشبورد و وضعیت</button>
-            <button class="tab-btn" id="tabMembersBtn" onclick="switchTab('members')">تایید اعضا و رمزها (مخصوص لیدر)</button>
-            <button class="tab-btn" onclick="switchTab('battles')">دستورات نبرد</button>
-            <button class="tab-btn" id="tabSecurityBtn" onclick="switchTab('security')">ضد هنگی و امنیت</button>
+            <button type="button" class="tab-btn active" onclick="switchTab('dashboard')">داشبورد</button>
+            <button type="button" class="tab-btn" id="adminTabBtn" style="display:none;" onclick="switchTab('members')">مدیریت اعضا و تاییدها</button>
         </div>
 
         <div id="dashboard" class="panel-section active">
-            <h2>خوش آمدید، <span id="welcomeName">کاربر گرامی</span></h2>
-            <div id="battleAlertBox" class="alert-box">
-                🚨 وضعیت نبرد: در حال حاضر هیچ دستور نبرد فعالی ثبت نشده است.
-            </div>
-            <p style="color: var(--text-muted); line-height: 1.6;">
-                از طریق تب‌های بالا می‌توانید وضعیت نبردها و اطلاعیه‌های کلن را مشاهده کنید.
-            </p>
+            <h2>خوش آمدید، <span id="welcomeName">کاربر</span></h2>
+            <p style="color: var(--text-muted);">به سامانه اختصاصی کلن خوش آمدید.</p>
         </div>
 
         <div id="members" class="panel-section">
-            <h2>تایید ثبت‌نام اعضا و مشاهده رمزها (پنل ادمین)</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">
-                اعضایی که تازه ثبت‌نام کرده‌اند در وضعیت «در انتظار تایید» هستند. ابتدا باید روی دکمه تایید بزنید تا اجازه ورود پیدا کنند.
-            </p>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>نام کاربری</th>
-                            <th>رمز عبور</th>
-                            <th>نقش</th>
-                            <th>وضعیت حساب</th>
-                            <th>عملیات مدیریتی</th>
-                        </tr>
-                    </thead>
-                    <tbody id="membersTableBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="battles" class="panel-section">
-            <h2>سیستم فراخوان و آماده‌باش نبرد</h2>
-            <div id="leaderBattleControls" style="display: none; margin-bottom: 20px;">
-                <div class="form-group">
-                    <label>کلن حریف:</label>
-                    <input type="text" id="opponentClan" placeholder="مثلاً کلن NX¹">
-                </div>
-                <div class="form-group">
-                    <label>زمان نبرد:</label>
-                    <input type="text" id="battleTime" placeholder="مثلاً امشب ساعت ۲۱:۰۰">
-                </div>
-                <button class="btn" onclick="dispatchBattleCall()" style="width: auto;">ارسال دستور نبرد به همه</button>
-            </div>
-            <h3>وضعیت نبردهای ابلاغ شده:</h3>
-            <div id="battleHistory" style="margin-top: 10px; color: var(--text-muted);">هنوز دستوری صادر نشده است.</div>
-        </div>
-
-𝓩, [03/08/1405 11:28 ق.ظ]
-<div id="security" class="panel-section">
-            <h2>گزارش کدهای هنگی و امنیت چت (مخصوص لیدر)</h2>
-            <div class="form-group">
-                <label>تست فیلتر هوشمند پیام:</label>
-                <input type="text" id="testMessageInput" placeholder="متن پیام مشکوک...">
-                <button class="btn btn-danger" style="margin-top: 8px; width: auto;" onclick="testSendSpam()">بررسی و تست فیلتر</button>
-            </div>
-            <div id="securityLogList" style="margin-top: 15px; color: var(--text-muted);">هیچ کد مخربی ثبت نشده است.</div>
+            <h2>لیست و تایید کاربران</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>نام کاربری</th>
+                        <th>رمز عبور</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="membersTableBody"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        // بارگذاری ایمن داده‌ها با قابلیت پاکسازی در صورت خرابی حافظه
-        let clanData;
-        try {
-            clanData = JSON.parse(localStorage.getItem('clanSystemData'));
-            if (!clanData || !clanData.members) {
-                throw new Error();
-            }
-        } catch (e) {
-            clanData = {
-                members: [
-                    { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
-                ],
-                battles: [],
-                securityLogs: []
-            };
-            localStorage.setItem('clanSystemData', JSON.stringify(clanData));
-        }
+        // دیتابیس اولیه
+        let db = JSON.parse(localStorage.getItem('clan_db')) || {
+            users: [
+                { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
+            ]
+        };
 
-        let currentUser = null;
-
-        function saveData() {
-            localStorage.setItem('clanSystemData', JSON.stringify(clanData));
+        function saveDb() {
+            localStorage.setItem('clan_db', JSON.stringify(db));
         }
 
         function switchAuthTab(tab) {
-            document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
             if(tab === 'login') {
-                document.querySelectorAll('.auth-tab-btn')[0].classList.add('active');
                 document.getElementById('loginSection').classList.add('active');
+                document.getElementById('registerSection').classList.remove('active');
+                document.getElementById('tabLoginBtn').classList.add('active');
+                document.getElementById('tabRegBtn').classList.remove('active');
             } else {
-                document.querySelectorAll('.auth-tab-btn')[1].classList.add('active');
                 document.getElementById('registerSection').classList.add('active');
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('tabRegBtn').classList.add('active');
+                document.getElementById('tabLoginBtn').classList.remove('active');
             }
         }
 
-        function handleRegister() {
-            try {
-                const user = document.getElementById('regUser').value.trim();
-                const pass = document.getElementById('regPass').value.trim();
-                if(!user || !pass) {
-                    alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
-                    return;
-                }
-                const exists = clanData.members.find(m => m.username === user);
-                if(exists) {
-                    alert('این نام کاربری قبلاً ثبت شده است.');
-                    return;
-                }
-                clanData.members.push({ username: user, pass: pass, role: 'Member', status: 'Pending' });
-                saveData();
-                alert('ثبت‌نام شما با موفقیت انجام شد! لطفاً به لیدر اطلاع دهید تا حساب شما را تایید کند.');
-                switchAuthTab('login');
-                document.getElementById('regUser').value = '';
-                document.getElementById('regPass').value = '';
-            } catch(err) {
-                alert('خطا در ثبت‌نام: ' + err.message);
+𝓩, [03/08/1405 11:33 ق.ظ]
+function toggleBanUser(idx) {
+            db.users[idx].status = db.users[idx].status === 'Banned' ? 'Active' : 'Banned';
+            saveDb();
+            renderAdminTable();
+        }
+    </script>
+</body>
+</html>
+
+𝓩, [03/08/1405 11:33 ق.ظ]
+function handleRegister() {
+            const u = document.getElementById('regUser').value.trim();
+            const p = document.getElementById('regPass').value.trim();
+            if(!u || !p) {
+                alert('لطفاً فیلدها را پر کنید.');
+                return;
             }
+            if(db.users.find(x => x.username === u)) {
+                alert('این نام کاربری قبلاً ثبت شده است.');
+                return;
+            }
+            db.users.push({ username: u, pass: p, role: 'Member', status: 'Pending' });
+            saveDb();
+            alert('ثبت‌نام انجام شد! منتظر تایید لیدر بمانید.');
+            switchAuthTab('login');
+            document.getElementById('regUser').value = '';
+            document.getElementById('regPass').value = '';
         }
 
         function handleLogin() {
-            try {
-                const user = document.getElementById('loginUser').value.trim();
-                const pass = document.getElementById('loginPass').value.trim();
-                
-                if(!user || !pass) {
-                    alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
-                    return;
-                }
-
-                const member = clanData.members.find(m => m.username === user && m.pass === pass);
-                if(!member) {
-                    alert('نام کاربری یا رمز عبور اشتباه است!');
-                    return;
-                }
-                if(member.status === 'Pending') {
-
-𝓩, [03/08/1405 11:28 ق.ظ]
-alert('⚠️ حساب کاربری شما هنوز توسط لیدر تایید نشده است. لطفاً منتظر تایید بمانید.');
-                    return;
-                }
-                if(member.status === 'Banned') {
-                    alert('❌ حساب کاربری شما مسدود (بن) شده است.');
-                    return;
-                }
-
-                currentUser = member;
-                document.getElementById('authOverlay').style.display = 'none';
-                setupPermissions();
-            } catch(err) {
-                alert('خطا در ورود: ' + err.message);
+            const u = document.getElementById('loginUser').value.trim();
+            const p = document.getElementById('loginPass').value.trim();
+            
+            if(!u || !p) {
+                alert('لطفاً نام کاربری و رمز عبور را وارد کنید.');
+                return;
             }
-        }
 
-        function logout() {
-            location.reload();
-        }
-
-        function setupPermissions() {
-            const roleBadge = document.getElementById('userRoleBadge');
-            const welcomeName = document.getElementById('welcomeName');
-            const tabMembersBtn = document.getElementById('tabMembersBtn');
-            const tabSecurityBtn = document.getElementById('tabSecurityBtn');
-            const leaderControls = document.getElementById('leaderBattleControls');
-
-            welcomeName.innerText = currentUser.username;
-
-            if (currentUser.role === 'Leader') {
-                roleBadge.innerText = "نقش: لیدر کل (مدیر)";
-                roleBadge.className = "badge badge-leader";
-                tabMembersBtn.style.display = 'block';
-                tabSecurityBtn.style.display = 'block';
-                leaderControls.style.display = 'block';
-            } else {
-                roleBadge.innerText = "نقش: عضو کلن";
-                roleBadge.className = "badge badge-member";
-                tabMembersBtn.style.display = 'none';
-                tabSecurityBtn.style.display = 'none';
-                leaderControls.style.display = 'none';
+            const found = db.users.find(x => x.username === u && x.pass === p);
+            if(!found) {
+                alert('نام کاربری یا رمز عبور اشتباه است!');
+                return;
             }
-            renderMembers();
+            if(found.status === 'Pending') {
+                alert('حساب شما هنوز توسط لیدر تایید نشده است.');
+                return;
+            }
+            if(found.status === 'Banned') {
+                alert('حساب شما مسدود شده است.');
+                return;
+            }
+
+            // ورود موفق
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('welcomeName').innerText = found.username;
+
+            if(found.role === 'Leader') {
+                document.getElementById('adminTabBtn').style.display = 'block';
+                renderAdminTable();
+            }
         }
 
         function switchTab(tabId) {
@@ -530,28 +227,24 @@ alert('⚠️ حساب کاربری شما هنوز توسط لیدر تایید
             event.currentTarget.classList.add('active');
         }
 
-        function renderMembers() {
-            if(!currentUser || currentUser.role !== 'Leader') return;
+        function renderAdminTable() {
             const tbody = document.getElementById('membersTableBody');
             tbody.innerHTML = '';
-            clanData.members.forEach((m, index) => {
-                let statusBadge = 'badge-member';
-                let statusText = 'فعال';
-                if(m.status === 'Pending') { statusBadge = 'badge-pending'; statusText = 'در انتظار تایید'; }
-                if(m.status === 'Banned') { statusBadge = 'badge-banned'; statusText = 'مسدود شده'; }
+            db.users.forEach((m, idx) => {
+                let badgeClass = 'badge-member';
+                let badgeText = 'فعال';
+                if(m.status === 'Pending') { badgeClass = 'badge-pending'; badgeText = 'در انتظار تایید'; }
+                if(m.status === 'Banned') { badgeClass = 'badge-banned'; badgeText = 'مسدود'; }
 
                 tbody.innerHTML += 
                     <tr>
-                        <td><strong>${m.username}</strong></td>
-                        <td><code style="background:#0f172a; padding:4px 8px; border-radius:4px; color:var(--success-color);">${m.pass}</code></td>
-                        <td><span class="badge ${m.role === 'Leader' ? 'badge-leader' : 'badge-member'}">${m.role}</span></td>
-                        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+                        <td>${m.username}</td>
+                        <td><code>${m.pass}</code></td>
+                        <td><span class="badge ${badgeClass}">${badgeText}</span></td>
                         <td>
                             ${m.role !== 'Leader' ? 
-                                ${m.status === 'Pending' ? <button class="btn btn-success" style="padding: 4px 10px; width:auto; margin-bottom:4px;" onclick="approveMember(${index})">تایید حساب</button> : ''}
-                                <button class="btn btn-danger" style="padding: 4px 10px; width:auto;" onclick="toggleBan(${index})">
-                                    ${m.status === 'Banned' ? 'رفع مسدودی' : 'بن (مسدود)'}
-                                </button>
+                                ${m.status === 'Pending' ? <button class="btn btn-success" style="padding:4px 8px; width:auto; font-size:0.8rem;" onclick="approveUser(${idx})">تایید</button> : ''}
+                                <button class="btn btn-danger" style="padding:4px 8px; width:auto; font-size:0.8rem;" onclick="toggleBanUser(${idx})">${m.status === 'Banned' ? 'رفع بن' : 'بن'}</button>
                              : 'مدیر کل'}
                         </td>
                     </tr>
@@ -559,53 +252,9 @@ alert('⚠️ حساب کاربری شما هنوز توسط لیدر تایید
             });
         }
 
-𝓩, [03/08/1405 11:28 ق.ظ]
-function approveMember(index) {
-            if(!currentUser || currentUser.role !== 'Leader') return;
-            clanData.members[index].status = 'Active';
-            saveData();
-            renderMembers();
-            alert('حساب کاربری تایید شد و اکنون اجازه ورود دارد.');
+        function approveUser(idx) {
+            db.users[idx].status = 'Active';
+            saveDb();
+            renderAdminTable();
+            alert('حساب کاربر تایید شد.');
         }
-
-        function toggleBan(index) {
-            if(!currentUser || currentUser.role !== 'Leader') return;
-            clanData.members[index].status = clanData.members[index].status === 'Banned' ? 'Active' : 'Banned';
-            saveData();
-            renderMembers();
-        }
-
-        function dispatchBattleCall() {
-            if(!currentUser || currentUser.role !== 'Leader') return;
-            const opponent = document.getElementById('opponentClan').value;
-            const time = document.getElementById('battleTime').value;
-            if(!opponent || !time) {
-                alert('لطفاً اطلاعات نبرد را کامل وارد کنید.');
-                return;
-            }
-            clanData.battles.push({ opponent, time });
-            saveData();
-            document.getElementById('battleHistory').innerHTML = ⚠️ نبرد ثبت شده: با کلن <strong>${opponent}</strong> در ساعت ${time};
-            document.getElementById('battleAlertBox').innerHTML = 🚨 <strong>فراخوان فوری نبرد!</strong> مسابقه با کلن <strong>${opponent}</strong> در زمان <strong>${time}</strong>.;
-            alert('دستور نبرد با موفقیت به پنل تمامی اعضا ارسال شد.');
-        }
-
-        function testSendSpam() {
-            if(!currentUser || currentUser.role !== 'Leader') return;
-            const text = document.getElementById('testMessageInput').value;
-            if(!text) return;
-            const isHang = text.length > 100 || /[\u200b-\u200d]/.test(text);
-            const logBox = document.getElementById('securityLogList');
-            if(isHang) {
-                clanData.securityLogs.push(text);
-                saveData();
-                logBox.innerHTML = clanData.securityLogs.map(l => <div style="color:var(--danger-color);">❌ کد هنگی مسدود شد: ${l}</div>).join('');
-                alert('کد هنگی شناسایی و مسدود شد!');
-            } else {
-                logBox.innerHTML = <div style="color:var(--success-color);">✅ پیام عادی و سالم است.</div>;
-            }
-            document.getElementById('testMessageInput').value = '';
-        }
-    </script>
-</body>
-</html>
