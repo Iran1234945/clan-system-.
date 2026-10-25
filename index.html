@@ -1,4 +1,4 @@
-𝓩, [03/08/1405 11:33 ق.ظ]
+𝓩, [03/08/1405 11:37 ق.ظ]
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -62,112 +62,7 @@
 </head>
 <body>
 
-𝓩, [03/08/1405 11:33 ق.ظ]
-<div id="authOverlay">
-        <div class="auth-card">
-            <h2>سامانه کلن</h2>
-            <div class="auth-tabs">
-                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">ورود</button>
-                <button type="button" class="auth-tab-btn" id="tabRegBtn" onclick="switchAuthTab('register')">ثبت‌نام</button>
-            </div>
-
-            <div id="loginSection" class="form-section active">
-                <div class="form-group">
-                    <label>نام کاربری:</label>
-                    <input type="text" id="loginUser">
-                </div>
-                <div class="form-group">
-                    <label>رمز عبور:</label>
-                    <input type="password" id="loginPass">
-                </div>
-                <button type="button" class="btn" onclick="handleLogin()">ورود به پنل</button>
-            </div>
-
-            <div id="registerSection" class="form-section">
-                <div class="form-group">
-                    <label>نام کاربری دلخواه:</label>
-                    <input type="text" id="regUser">
-                </div>
-                <div class="form-group">
-                    <label>رمز عبور دلخواه:</label>
-                    <input type="password" id="regPass">
-                </div>
-                <button type="button" class="btn btn-success" onclick="handleRegister()">ثبت‌نام</button>
-            </div>
-            
-            <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 15px;">ادمین: admin / leader123</p>
-        </div>
-    </div>
-
-    <header>
-        <h1>سامانه مدیریت کلن</h1>
-        <button type="button" class="btn btn-danger" style="width: auto; padding: 6px 12px;" onclick="location.reload()">خروج</button>
-    </header>
-
-    <div class="container">
-        <div class="tabs">
-            <button type="button" class="tab-btn active" onclick="switchTab('dashboard')">داشبورد</button>
-            <button type="button" class="tab-btn" id="adminTabBtn" style="display:none;" onclick="switchTab('members')">مدیریت اعضا و تاییدها</button>
-        </div>
-
-        <div id="dashboard" class="panel-section active">
-            <h2>خوش آمدید، <span id="welcomeName">کاربر</span></h2>
-            <p style="color: var(--text-muted);">به سامانه اختصاصی کلن خوش آمدید.</p>
-        </div>
-
-        <div id="members" class="panel-section">
-            <h2>لیست و تایید کاربران</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>نام کاربری</th>
-                        <th>رمز عبور</th>
-                        <th>وضعیت</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody id="membersTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        // دیتابیس اولیه
-        let db = JSON.parse(localStorage.getItem('clan_db')) || {
-            users: [
-                { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
-            ]
-        };
-
-        function saveDb() {
-            localStorage.setItem('clan_db', JSON.stringify(db));
-        }
-
-        function switchAuthTab(tab) {
-            if(tab === 'login') {
-                document.getElementById('loginSection').classList.add('active');
-                document.getElementById('registerSection').classList.remove('active');
-                document.getElementById('tabLoginBtn').classList.add('active');
-                document.getElementById('tabRegBtn').classList.remove('active');
-            } else {
-                document.getElementById('registerSection').classList.add('active');
-                document.getElementById('loginSection').classList.remove('active');
-                document.getElementById('tabRegBtn').classList.add('active');
-                document.getElementById('tabLoginBtn').classList.remove('active');
-            }
-        }
-
-𝓩, [03/08/1405 11:33 ق.ظ]
-function toggleBanUser(idx) {
-            db.users[idx].status = db.users[idx].status === 'Banned' ? 'Active' : 'Banned';
-            saveDb();
-            renderAdminTable();
-        }
-    </script>
-</body>
-</html>
-
-𝓩, [03/08/1405 11:33 ق.ظ]
+𝓩, [03/08/1405 11:37 ق.ظ]
 function handleRegister() {
             const u = document.getElementById('regUser').value.trim();
             const p = document.getElementById('regPass').value.trim();
@@ -188,6 +83,7 @@ function handleRegister() {
         }
 
         function handleLogin() {
+            alert("دکمه ورود فشرده شد!"); // برای تست اینکه دکمه کار می‌کند
             const u = document.getElementById('loginUser').value.trim();
             const p = document.getElementById('loginPass').value.trim();
             
@@ -258,3 +154,109 @@ function handleRegister() {
             renderAdminTable();
             alert('حساب کاربر تایید شد.');
         }
+
+𝓩, [03/08/1405 11:37 ق.ظ]
+<div id="authOverlay">
+        <div class="auth-card">
+            <h2>سامانه کلن (نسخه تست)</h2>
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">ورود</button>
+                <button type="button" class="auth-tab-btn" id="tabRegBtn" onclick="switchAuthTab('register')">ثبت‌نام</button>
+            </div>
+
+            <div id="loginSection" class="form-section active">
+                <div class="form-group">
+                    <label>نام کاربری:</label>
+                    <input type="text" id="loginUser">
+                </div>
+                <div class="form-group">
+                    <label>رمز عبور:</label>
+                    <input type="password" id="loginPass">
+                </div>
+                <button type="button" class="btn" onclick="handleLogin()">ورود به پنل</button>
+            </div>
+
+            <div id="registerSection" class="form-section">
+                <div class="form-group">
+                    <label>نام کاربری دلخواه:</label>
+                    <input type="text" id="regUser">
+                </div>
+                <div class="form-group">
+                    <label>رمز عبور دلخواه:</label>
+                    <input type="password" id="regPass">
+                </div>
+                <button type="button" class="btn btn-success" onclick="handleRegister()">ثبت‌نام</button>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 15px;">ادمین: admin / leader123</p>
+        </div>
+    </div>
+
+    <header>
+        <h1>سامانه مدیریت کلن</h1>
+        <button type="button" class="btn btn-danger" style="width: auto; padding: 6px 12px;" onclick="location.reload()">خروج</button>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button type="button" class="tab-btn active" onclick="switchTab('dashboard')">داشبورد</button>
+            <button type="button" class="tab-btn" id="adminTabBtn" style="display:none;" onclick="switchTab('members')">مدیریت اعضا و تاییدها</button>
+        </div>
+
+        <div id="dashboard" class="panel-section active">
+            <h2>خوش آمدید، <span id="welcomeName">کاربر</span></h2>
+            <p style="color: var(--text-muted);">به سامانه اختصاصی کلن خوش آمدید.</p>
+        </div>
+
+        <div id="members" class="panel-section">
+            <h2>لیست و تایید کاربران</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>نام کاربری</th>
+                        <th>رمز عبور</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="membersTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        alert("فایل آپدیت شد و لود شد!"); // این پیام نشان می‌دهد که کد جدید روی گوشی شما بارگذاری شده است
+
+        let db = JSON.parse(localStorage.getItem('clan_db')) || {
+            users: [
+                { username: "admin", pass: "leader123", role: "Leader", status: "Active" }
+            ]
+        };
+
+        function saveDb() {
+            localStorage.setItem('clan_db', JSON.stringify(db));
+        }
+
+        function switchAuthTab(tab) {
+            if(tab === 'login') {
+                document.getElementById('loginSection').classList.add('active');
+                document.getElementById('registerSection').classList.remove('active');
+                document.getElementById('tabLoginBtn').classList.add('active');
+                document.getElementById('tabRegBtn').classList.remove('active');
+            } else {
+                document.getElementById('registerSection').classList.add('active');
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('tabRegBtn').classList.add('active');
+                document.getElementById('tabLoginBtn').classList.remove('active');
+            }
+        }
+
+𝓩, [03/08/1405 11:37 ق.ظ]
+function toggleBanUser(idx) {
+            db.users[idx].status = db.users[idx].status === 'Banned' ? 'Active' : 'Banned';
+            saveDb();
+            renderAdminTable();
+        }
+    </script>
+</body>
+</html>
