@@ -1,692 +1,911 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>سامانه مدیریت کلن ALLIANCE US ⚡️ Pro Max</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.net/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALLIANCE US | سامانه جامع شات‌های برد</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
-    
     :root {
-      --primary-neon: #6366f1;
-      --secondary-neon: #a855f7;
-      --accent-gold: #f59e0b;
-      --accent-cyan: #06b6d4;
-      --bg-dark: #05070f;
+      --bg: #070b14;
+      --surface: #0e1626;
+      --surface-2: #141f36;
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --radius: 16px;
     }
 
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Vazirmatn', sans-serif;
-      background: radial-gradient(circle at top right, #1e1b4b, #0f172a, var(--bg-dark));
-      color: #f8fafc;
+      margin: 0;
+      font-family: "Vazirmatn", sans-serif;
+      background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 40%),
+                  radial-gradient(circle at bottom left, rgba(34, 197, 94, 0.08), transparent 40%),
+                  var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 20px 16px 64px;
+    }
+
+    header.topbar {
       display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 20px;
     }
 
-    /* انیمیشن پس‌زمینه نئونی */
-    .glow-bg {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      background: linear-gradient(45deg, var(--primary-neon), var(--secondary-neon));
-      filter: blur(150px);
-      border-radius: 50%;
-      z-index: -1;
-      animation: pulseGlow 8s infinite alternate;
+    .brand h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
     }
 
-    @keyframes pulseGlow {
-      0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-      100% { transform: translate(100px, 100px) scale(1.3); opacity: 0.8; }
-    }
-
-    .navbar {
-      background: rgba(15, 23, 42, 0.75) !important;
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 30px rgba(0,0,0,0.5);
-    }
-
-    .glass-card {
-      background: rgba(30, 41, 59, 0.55);
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-      transition: all 0.4s ease;
-    }
-
-    .glass-card:hover {
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 15px 50px rgba(99, 102, 241, 0.2);
-    }
-
-    /* کارت ورود اختصاصی سینمایی */
-    .auth-card {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(168, 85, 247, 0.3);
-    }
-
-    .auth-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(transparent, var(--primary-neon), transparent 30%);
-      animation: rotateBorder 4s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes rotateBorder {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .auth-inner {
-      background: rgba(15, 23, 42, 0.95);
-      border-radius: 18px;
-    }
-
-    .stat-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      border-radius: 16px;
-      padding: 18px;
-      transition: all 0.3s ease;
-    }
-    .stat-card:hover {
-      border-color: var(--accent-cyan);
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25);
-    }
-
-    .form-control, .form-select {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .form-control:focus, .form-select:focus {
-      background: rgba(15, 23, 42, 0.95);
-      color: #fff;
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-    }
-
-    .btn-custom {
-      background: linear-gradient(45deg, var(--primary-neon), var(--secondary-neon));
-      border: none;
-      color: white;
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
       font-weight: 700;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent);
+    }
+    .role-badge.admin {
+      background: rgba(34, 197, 94, 0.14);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: #4ade80;
+    }
+
+    .btn {
+      font-family: inherit;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); color: #04101c; border-color: transparent; font-weight: 700; }
+    .btn-success { background: var(--accent-2); color: #05160b; border-color: transparent; font-weight: 700; }
+    .btn-danger { background: rgba(239, 68, 68, 0.16); color: #fca5a5; border-color: rgba(239, 68, 68, 0.35); }
+    .btn-warn { background: rgba(245, 158, 11, 0.16); color: #fcd34d; border-color: rgba(245, 158, 11, 0.35); }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
       border-radius: 12px;
-      padding: 12px;
-      transition: all 0.3s ease;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .tab-btn.active {
+      background: var(--surface-2);
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
-    .btn-custom:hover {
-      background: linear-gradient(45deg, #4f46e5, #7c3aed);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 25px rgba(99, 102, 241, 0.6);
-      color: white;
+    .panel {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .panel.active { display: block; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin-top: 16px; }
+
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    input, select, textarea {
+      width: 100%;
+      font-family: inherit;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.92rem;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+
+    .dropzone {
+      border: 2px dashed rgba(56, 189, 248, 0.45);
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: var(--radius);
+      padding: 28px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .dropzone.dragover {
+      border-color: var(--accent-2);
+      background: rgba(34, 197, 94, 0.08);
     }
 
-    .chat-box {
-      height: 420px;
-      overflow-y: auto;
+    .clan-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 18px;
-      background: rgba(15, 23, 42, 0.7);
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .clan-card .count {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent);
     }
 
-    .chat-bubble {
-      max-width: 80%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      font-size: 0.95rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .chat-me {
-      align-self: flex-start;
-      background: linear-gradient(135deg, #4f46e5, #4338ca);
-      color: white;
-      border-bottom-right-radius: 2px;
-    }
-
-    .chat-other {
-      align-self: flex-end;
-      background: rgba(51, 65, 85, 0.85);
-      color: white;
-      border-bottom-left-radius: 2px;
-    }
-
-    .chat-bot {
-      align-self: center;
-      background: linear-gradient(135deg, #059669, #10b981);
-      color: white;
-      border-radius: 14px;
-      max-width: 90%;
-      text-align: center;
-    }
-
-    .pass-text {
-      font-family: monospace;
-      letter-spacing: 1.5px;
-      color: #38bdf8;
-      font-weight: bold;
-      background: rgba(56, 189, 248, 0.1);
-      padding: 4px 8px;
-      border-radius: 6px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .ticker-wrap {
-      width: 100%;
-      overflow: hidden;
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.4);
+    .shot-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-
-    .ticker {
-      display: inline-block;
-      white-space: nowrap;
-      animation: ticker 25s linear infinite;
-    }
-
-    @keyframes ticker {
-      0% { transform: translate3d(100%, 0, 0); }
-      100% { transform: translate3d(-100%, 0, 0); }
-    }
-
-    .quick-reaction {
+    .shot-card img {
+      width: 100%;
+      height: 155px;
+      object-fit: cover;
       cursor: pointer;
-      font-size: 1.2rem;
-      transition: transform 0.2s;
+      background: #05080f;
     }
-    .quick-reaction:hover {
-      transform: scale(1.3);
+    .shot-meta {
+      padding: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .shot-meta strong { color: var(--text); display: block; font-size: 0.88rem; }
+    .shot-actions {
+      display: flex;
+      gap: 6px;
+      padding: 0 10px 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .pill-ok { background: rgba(34, 197, 94, 0.16); color: #4ade80; }
+    .pill-pending { background: rgba(245, 158, 11, 0.16); color: #fcd34d; }
+
+    .preview-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .preview-strip img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--surface-2);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      z-index: 9999;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 9990;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      max-width: 860px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .modal-box img {
+      width: 100%;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #04070e;
+    }
+
+    .cmd-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 0.85rem;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <h1>ALLIANCE US | سامانه جامع شات‌های برد</h1>
+        <p>آرشیو هوشمند بردها، آپلود دسته‌ای، لینک کل‌کل آنلاین و فرمان ارسال به کانال</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span id="roleBadge" class="role-badge">حالت عضو عادی</span>
+        <button id="adminToggleBtn" class="btn btn-warn" onclick="openAdminLogin()">ورود فرمانده (Admin)</button>
+      </div>
+    </header>
 
-  <div class="glow-bg"></div>
-
-  <!-- هدر ناوبری -->
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold fs-3 text-warning animate__animated animate__pulse animate__infinite" href="#">
-        ⚡️ ALLIANCE US ⚡️
-      </a>
-      <div id="userInfo" class="d-flex align-items-center gap-3"></div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="galleryTab" onclick="switchTab('galleryTab')">گالری و جستجوی کلن‌ها</button>
+      <button class="tab-btn" data-tab="uploadTab" onclick="switchTab('uploadTab')">آپلود دسته‌ای شات (Drag & Drop)</button>
+      <button class="tab-btn" data-tab="adminTab" onclick="switchTab('adminTab')">پنل فرماندهی، تایید و ارسال به چنل</button>
     </div>
-  </nav>
 
-  <div class="container my-4 flex-grow-1">
-    
-    <!-- بخش ورود و ثبت نام با انیمیشن فوق پیشرفته -->
-    <div id="authSection" class="row justify-content-center animate__animated animate__zoomIn">
-      <div class="col-md-6 col-lg-5">
-        <div class="auth-card p-1">
-          <div class="auth-inner p-4">
-            <h3 class="text-center text-warning fw-bold mb-4"><i class="fa-solid fa-shield-halved me-2"></i>ورود به قلمرو کلن</h3>
-            <ul class="nav nav-pills nav-justified mb-4" id="pills-tab" role="tablist">
-              <li class="nav-item">
-                <button class="nav-link active text-white fw-bold" id="tab-login" data-bs-toggle="pill" data-bs-target="#pills-login">ورود اعضا</button>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link text-white fw-bold" id="tab-register" data-bs-toggle="pill" data-bs-target="#pills-register">ثبت نام جدید</button>
-              </li>
-            </ul>
+    <!-- ۱. گالری و جستجوی کلن‌ها -->
+    <section id="galleryTab" class="panel active">
+      <div class="grid-2" style="align-items:end; margin-bottom:16px;">
+        <div>
+          <label for="searchClanInput">جستجوی نام کلن دشمن (مثلاً NX یا EP)</label>
+          <input id="searchClanInput" type="text" placeholder="نام کلن را بنویسید یا از لیست انتخاب کنید..." oninput="renderGallery()" />
+        </div>
+        <div>
+          <label for="filterClanSelect">فیلتر سریع کلن‌ها</label>
+          <select id="filterClanSelect" onchange="onFilterClanChange()">
+            <option value="">همه کلن‌های ثبت‌شده</option>
+          </select>
+        </div>
+      </div>
 
-            <div class="tab-content">
-              <!-- فرم ورود -->
-              <div class="tab-pane fade show active" id="pills-login">
-                <form id="loginForm">
-                  <div class="mb-3">
-                    <label class="form-label text-light">نام کاربری</label>
-                    <input type="text" id="loginUser" class="form-control" placeholder="نام کاربری..." required autocomplete="off">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label text-light">رمز عبور</label>
-                    <input type="password" id="loginPass" class="form-control" placeholder="رمز عبور..." required autocomplete="off">
-                  </div>
-                  <button type="submit" class="btn btn-custom w-100 mt-2">ورود به سامانه 🚀</button>
-                </form>
+      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; background:var(--surface-2); padding:12px 14px; border-radius:12px; border:1px solid var(--border);">
+        <div id="gallerySummary" style="font-weight:700; color:var(--accent);">در حال بارگذاری شات‌ها...</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="copyShareLink()">کپی لینک اختصاصی کلن</button>
+          <button class="btn" onclick="openAllShotsModal()">نمایش همه شات‌های این کلن</button>
+        </div>
+      </div>
+
+      <h3 style="margin:20px 0 10px; font-size:1rem;">رده‌بندی کلن‌های دشمن بر اساس تعداد شات برد</h3>
+      <div id="clanSummaryGrid" class="grid-3"></div>
+
+      <h3 style="margin:24px 0 6px; font-size:1rem;">گالری شات‌های تاییدشده</h3>
+      <div id="shotsGalleryGrid" class="gallery-grid"></div>
+    </section>
+
+    <!-- ۲. آپلود دسته‌ای -->
+    <section id="uploadTab" class="panel">
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div>
+          <label for="uploadClanName">نام کلن دشمن (مثلاً NX یا EP)</label>
+          <input id="uploadClanName" type="text" list="knownClansDatalist" placeholder="مثال: NX" />
+          <datalist id="knownClansDatalist"></datalist>
+        </div>
+        <div>
+          <label for="uploaderName">نام ثبت‌کننده (عضو یا ادمین)</label>
+          <input id="uploaderName" type="text" placeholder="نام گیم یا لقب شما" />
+        </div>
+      </div>
+
+      <div id="dropzone" class="dropzone" onclick="document.getElementById('fileInput').click()">
+        <p style="margin:0; font-size:1rem; font-weight:700; color:var(--accent);">شات‌ها را اینجا بکشید و رها کنید یا کلیک کنید</p>
+        <p style="margin:6px 0 0; font-size:0.84rem; color:var(--muted);">امکان انتخاب همزمان ده‌ها اسکرین‌شات (PNG, JPG, WEBP)</p>
+        <input id="fileInput" type="file" accept="image/*" multiple style="display:none;" onchange="handleFilesSelected(this.files)" />
+      </div>
+
+      <div id="selectedPreview" class="preview-strip"></div>
+
+      <div style="margin-top:16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <button id="submitUploadBtn" class="btn btn-success" onclick="uploadSelectedShots()">ثبت و ارسال شات‌ها</button>
+        <span id="uploadProgressText" style="font-size:0.88rem; color:var(--muted);"></span>
+      </div>
+    </section>
+
+    <!-- ۳. پنل فرماندهی، تایید و ارسال به چنل -->
+    <section id="adminTab" class="panel">
+      <div id="adminLockedBox" style="text-align:center; padding:28px 16px;">
+        <p style="margin:0 0 12px; color:var(--warn); font-weight:700;">این بخش مخصوص فرمانده کلن است.</p>
+        <button class="btn btn-primary" onclick="openAdminLogin()">ورود با رمز فرمانده</button>
+      </div>
+
+      <div id="adminUnlockedBox" style="display:none;">
+        <div class="grid-2">
+          <!-- ارسال به چنل -->
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:16px;">
+            <h3 style="margin:0 0 12px; font-size:1rem; color:var(--accent);">فرمان ارسال به کانال پیام‌رسان</h3>
+
+            <label for="channelTargetClan">انتخاب کلن حریف (مثلاً EP یا NX)</label>
+            <select id="channelTargetClan" style="margin-bottom:12px;"></select>
+
+            <div class="grid-2" style="margin-bottom:12px;">
+              <div>
+                <label for="channelSendCount">تعداد شات (مثلاً 100)</label>
+                <input id="channelSendCount" type="number" min="1" max="2000" value="100" />
               </div>
-
-              <!-- فرم ثبت نام -->
-              <div class="tab-pane fade" id="pills-register">
-                <form id="registerForm">
-                  <div class="mb-3">
-                    <label class="form-label text-light">نام کامل / اسم داخل بازی</label>
-                    <input type="text" id="regName" class="form-control" placeholder="مثال: علی - Destroyer" required autocomplete="off">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label text-light">نام کاربری جهت ورود</label>
-                    <input type="text" id="regUser" class="form-control" placeholder="نام کاربری دلخواه..." required autocomplete="off">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label text-light">رمز عبور</label>
-                    <input type="password" id="regPass" class="form-control" placeholder="رمز عبور..." required autocomplete="off">
-                  </div>
-                  <button type="submit" class="btn btn-custom w-100 mt-2">ارسال درخواست عضویت ✨</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- داشبورد اصلی لیدر و اعضا -->
-    <div id="mainDashboard" class="d-none animate__animated animate__fadeIn">
-      
-      <!-- آمارگیر فوق حرفه‌ای کلن -->
-      <div class="row g-3 mb-4">
-        <div class="col-md-3 col-6">
-          <div class="stat-card d-flex align-items-center justify-content-between">
-            <div>
-              <small class="text-muted d-block">اعضای کلن</small>
-              <h3 id="statTotal" class="mb-0 fw-bold text-info">0</h3>
-            </div>
-            <i class="fa-solid fa-users-viewfinder fs-1 text-info opacity-50"></i>
-          </div>
-        </div>
-        <div class="col-md-3 col-6">
-          <div class="stat-card d-flex align-items-center justify-content-between">
-            <div>
-              <small class="text-muted d-block">در انتظار تایید</small>
-              <h3 id="statPending" class="mb-0 fw-bold text-warning">0</h3>
-            </div>
-            <i class="fa-solid fa-user-clock fs-1 text-warning opacity-50"></i>
-          </div>
-        </div>
-        <div class="col-md-3 col-6">
-          <div class="stat-card d-flex align-items-center justify-content-between">
-            <div>
-              <small class="text-muted d-block">مدیران فعال</small>
-              <h3 id="statAdmins" class="mb-0 fw-bold text-secondary">0</h3>
-            </div>
-            <i class="fa-solid fa-user-shield fs-1 text-secondary opacity-50"></i>
-          </div>
-        </div>
-        <div class="col-md-3 col-6">
-          <div class="stat-card d-flex align-items-center justify-content-between">
-            <div>
-              <small class="text-muted d-block">سرور فایربیس</small>
-              <h3 class="mb-0 fw-bold text-success">آنلاین ⚡️</h3>
-            </div>
-            <i class="fa-solid fa-bolt fs-1 text-success opacity-50"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- نوار اطلاعیه زنده متحرک -->
-      <div class="ticker-wrap mb-4">
-        <div class="d-flex align-items-center">
-          <span class="badge bg-warning text-dark me-2 px-3 py-2 fw-bold"><i class="fa-solid fa-bullhorn me-1"></i> اطلاعیه</span>
-          <div class="ticker text-light fw-bold" id="announcementText">خوش آمدید به سامانه پیشرفته مدیریت کلن ALLIANCE US!</div>
-        </div>
-      </div>
-
-      <!-- پنل اختصاصی لیدر (مشاهده نام کاربری و رمز عبور) -->
-      <div id="adminPanel" class="glass-card p-4 mb-4 d-none">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="mb-0 text-warning"><i class="fa-solid fa-crown me-2"></i>پنل مدیریت ویژه لیدر کلن</h4>
-          <div>
-            <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#announcementModal">ثبت اطلاعیه</button>
-            <button id="clearChatBtn" class="btn btn-sm btn-outline-danger">پاکسازی چت</button>
-          </div>
-        </div>
-        
-        <div class="table-responsive">
-          <table class="table table-dark table-hover align-middle">
-            <thead>
-              <tr>
-                <th>نام کاربر</th>
-                <th>نام کاربری</th>
-                <th>رمز عبور (دسترسی لیدر)</th>
-                <th>مقام</th>
-                <th>وضعیت</th>
-                <th>عملیات</th>
-              </tr>
-            </thead>
-            <tbody id="membersTable"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- چت‌روم هوشمند زنده -->
-      <div class="glass-card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="mb-0 text-info"><i class="fa-solid fa-comments me-2"></i>چت‌روم زنده و هوشمند کلن</h4>
-          <div class="d-flex gap-2">
-            <span class="quick-reaction" onclick="sendEmoji('👍')">👍</span>
-            <span class="quick-reaction" onclick="sendEmoji('🔥')">🔥</span>
-            <span class="quick-reaction" onclick="sendEmoji('⚔️')">⚔️</span>
-            <span class="quick-reaction" onclick="sendEmoji('👑')">👑</span>
-            <span class="quick-reaction" onclick="sendEmoji('🏆')">🏆</span>
-          </div>
-        </div>
-        <div id="chatBox" class="chat-box mb-3"></div>
-        <form id="chatForm" class="d-flex gap-2">
-          <input type="text" id="chatInput" class="form-control" placeholder="پیام خود را بنویسید (ربات هوشمند پاسخگوست)..." autocomplete="off" required>
-          <button type="submit" class="btn btn-custom px-4"><i class="fa-solid fa-paper-plane"></i></button>
-        </form>
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- مدال اطلاعیه -->
-  <div class="modal fade" id="announcementModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content glass-card text-white">
-        <div class="modal-header border-bottom-0">
-          <h5 class="modal-title">ثبت اطلاعیه سراسری</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <textarea id="newAnnouncementInput" class="form-control" rows="3" placeholder="متن جدید اطلاعیه کلن..."></textarea>
-        </div>
-        <div class="modal-footer border-top-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-          <button type="button" id="saveAnnouncementBtn" class="btn btn-custom" data-bs-dismiss="modal">انتشار</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- اسکریپت اصلی فایربیس و مدیریت سیستم -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyD25Qf8dy99c3xaE_M-cGBUTlAlcweUIiI",
-      authDomain: "alliance-us.firebaseapp.com",
-      databaseURL: "https://alliance-us-default-rtdb.firebaseio.com",
-      projectId: "alliance-us",
-      storageBucket: "alliance-us.firebasestorage.app",
-      messagingSenderId: "26796202986",
-      appId: "1:26796202986:web:60074204d795edf3407093",
-      measurementId: "G-P8RRRH3V00"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    let currentUser = null;
-
-    async function initAdmin() {
-      const adminRef = ref(db, 'users/admin');
-      await set(adminRef, {
-        name: "لیدر کلن",
-        username: "admin",
-        pass: "6189",
-        role: "admin",
-        status: "approved"
-      });
-    }
-    initAdmin();
-
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('regName').value.trim();
-      const username = document.getElementById('regUser').value.trim().toLowerCase();
-      const pass = document.getElementById('regPass').value.trim();
-
-      if (!username || !pass || !name) return;
-
-      const userRef = ref(db, `users/${username}`);
-      const snapshot = await get(userRef);
-
-      if (snapshot.exists()) {
-        alert("این نام کاربری قبلاً ثبت شده است!");
-      } else {
-        await set(userRef, {
-          name: name,
-          username: username,
-          pass: pass,
-          role: "member",
-          status: "pending"
-        });
-        alert("درخواست عضویت فرستاده شد! منتظر تایید لیدر باشید.");
-        document.getElementById('registerForm').reset();
-      }
-    });
-
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = document.getElementById('loginUser').value.trim().toLowerCase();
-      const pass = document.getElementById('loginPass').value.trim();
-
-      const userRef = ref(db, `users/${username}`);
-      const snapshot = await get(userRef);
-
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
-        if (userData.pass === pass) {
-          if (userData.status === "approved" || userData.role === "admin") {
-            currentUser = userData;
-            loadDashboard();
-          } else {
-            alert("حساب شما هنوز توسط لیدر تایید نشده است!");
-          }
-        } else {
-          alert("رمز عبور اشتباه است!");
-        }
-      } else {
-        alert("کاربری با این نام یافت نشد!");
-      }
-    });
-
-    function loadDashboard() {
-      document.getElementById('authSection').classList.add('d-none');
-      document.getElementById('mainDashboard').classList.remove('d-none');
-
-      const roleBadge = currentUser.role === 'admin' ? '👑 لیدر' : (currentUser.role === 'co-leader' ? '⭐ معاون' : '⚔️ عضو');
-      document.getElementById('userInfo').innerHTML = `
-        <span class="text-light fw-bold"><i class="fa-solid fa-user-ninja me-1 text-warning"></i>${currentUser.name} (${roleBadge})</span>
-        <button id="logoutBtn" class="btn btn-sm btn-outline-danger">خروج</button>
-      `;
-
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-        location.reload();
-      });
-
-      if (currentUser.role === 'admin') {
-        document.getElementById('adminPanel').classList.remove('d-none');
-        listenToMembers();
-      }
-
-      listenToAnnouncements();
-      listenToStats();
-      listenToChat();
-    }
-
-    function listenToAnnouncements() {
-      onValue(ref(db, 'announcement'), (snapshot) => {
-        if (snapshot.exists()) {
-          document.getElementById('announcementText').innerText = snapshot.val().text;
-        }
-      });
-    }
-
-    document.getElementById('saveAnnouncementBtn').addEventListener('click', async () => {
-      const text = document.getElementById('newAnnouncementInput').value.trim();
-      if (text) {
-        await set(ref(db, 'announcement'), { text: text });
-        document.getElementById('newAnnouncementInput').value = '';
-      }
-    });
-
-    function listenToStats() {
-      onValue(ref(db, 'users'), (snapshot) => {
-        if (snapshot.exists()) {
-          const users = snapshot.val();
-          let total = 0, pending = 0, admins = 0;
-          for (let key in users) {
-            total++;
-            if (users[key].status === 'pending') pending++;
-            if (users[key].role === 'admin' || users[key].role === 'co-leader') admins++;
-          }
-          document.getElementById('statTotal').innerText = total;
-          document.getElementById('statPending').innerText = pending;
-          document.getElementById('statAdmins').innerText = admins;
-        }
-      });
-    }
-
-    function listenToMembers() {
-      onValue(ref(db, 'users'), (snapshot) => {
-        const tbody = document.getElementById('membersTable');
-        tbody.innerHTML = '';
-        if (snapshot.exists()) {
-          const users = snapshot.val();
-          for (let key in users) {
-            const u = users[key];
-            if (u.role === 'admin') continue;
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td class="fw-bold">${u.name}</td>
-              <td>${u.username}</td>
-              <td><span class="pass-text">${u.pass}</span></td>
-              <td>
-                <select onchange="changeRole('${u.username}', this.value)" class="form-select form-select-sm" style="width: auto;">
-                  <option value="member" ${u.role === 'member' ? 'selected' : ''}>⚔️ عضو</option>
-                  <option value="co-leader" ${u.role === 'co-leader' ? 'selected' : ''}>⭐ معاون</option>
+              <div>
+                <label for="channelSendMode">اولویت ارسال</label>
+                <select id="channelSendMode">
+                  <option value="unsent_first">شات‌های ارسال‌نشده در چنل (بدون تکراری)</option>
+                  <option value="newest">جدیدترین شات‌های ثبت‌شده</option>
                 </select>
-              </td>
-              <td>
-                <span class="badge ${u.status === 'approved' ? 'bg-success' : 'bg-warning text-dark'} badge-status">
-                  ${u.status === 'approved' ? 'تایید شده' : 'در انتظار تایید'}
-                </span>
-              </td>
-              <td>
-                ${u.status === 'pending' ? `<button onclick="approveUser('${u.username}')" class="btn btn-sm btn-success me-1">تایید</button>` : ''}
-                <button onclick="deleteUser('${u.username}')" class="btn btn-sm btn-danger">حذف</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          }
-        }
+              </div>
+            </div>
+
+            <label for="channelCaption">متن کپشن کانال</label>
+            <textarea id="channelCaption" rows="2" style="margin-bottom:12px;" placeholder="سند شکست مقابل کلن {CLAN} | ALLIANCE US"></textarea>
+
+            <button class="btn btn-success" onclick="queueChannelCommand()">ثبت فرمان «انتشار در کانال»</button>
+          </div>
+
+          <!-- صف فرمان‌های ارسال به چنل -->
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:16px;">
+            <h3 style="margin:0 0 8px; font-size:1rem; color:#4ade80;">صف فرمان‌های کانال (ربات PythonAnywhere)</h3>
+            <p style="margin:0 0 8px; font-size:0.82rem; color:var(--muted);">ربات پایتون شما فرمان‌های با وضعیت <code>pending</code> را می‌خواند و در چنل منتشر می‌کند.</p>
+            <div id="channelCommandsList"></div>
+          </div>
+        </div>
+
+        <h3 style="margin:24px 0 10px; font-size:1rem; color:var(--warn);">صف تایید شات‌های ارسالی اعضا</h3>
+        <div id="pendingShotsGrid" class="gallery-grid"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- مودال ورود ادمین -->
+  <div id="adminModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width:400px;">
+      <h3 style="margin:0 0 12px;">ورود به پنل فرماندهی</h3>
+      <label for="adminPassInput">رمز عبور فرمانده</label>
+      <input id="adminPassInput" type="password" placeholder="رمز را وارد کنید..." style="margin-bottom:14px;" />
+      <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <button class="btn" onclick="closeAdminModal()">انصراف</button>
+        <button class="btn btn-primary" onclick="verifyAdminLogin()">ورود</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال نمایش بزرگ عکس -->
+  <div id="imageModal" class="modal-backdrop" onclick="if(event.target===this) closeImageModal()">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong id="modalImageTitle">پیش‌نمایش شات</strong>
+        <button class="btn btn-danger" onclick="closeImageModal()">بستن</button>
+      </div>
+      <img id="modalImageSrc" src="" alt="پیش‌نمایش" />
+      <p id="modalImageMeta" style="margin:10px 0 0; font-size:0.85rem; color:var(--muted);"></p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // تنظیمات Firebase و ImgBB را در این بخش قرار دهید
+    const FIREBASE_CONFIG = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "alliance-us-default-rtdb.firebaseapp.com",
+      databaseURL: "https://alliance-us-default-rtdb.firebaseio.com",
+      projectId: "alliance-us-default-rtdb",
+      storageBucket: "alliance-us-default-rtdb.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    const IMGBB_API_KEY = "YOUR_IMGBB_API_KEY";
+    const ADMIN_PASSCODE = "6189";
+
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const db = firebase.database();
+
+    let allShots = [];
+    let channelCommands = [];
+    let pendingFiles = [];
+    let isAdmin = sessionStorage.getItem("alliance_us_admin") === "1";
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => { el.style.display = "none"; }, 3400);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById(tabId).classList.add("active");
+      document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add("active");
+      if (tabId === "adminTab") syncAdminUI();
+    }
+
+    function openAdminLogin() {
+      if (isAdmin) {
+        isAdmin = false;
+        sessionStorage.removeItem("alliance_us_admin");
+        syncAdminUI();
+        renderGallery();
+        showToast("از حساب فرمانده خارج شدید.");
+        return;
+      }
+      document.getElementById("adminPassInput").value = "";
+      document.getElementById("adminModal").classList.add("open");
+      document.getElementById("adminPassInput").focus();
+    }
+
+    function closeAdminModal() {
+      document.getElementById("adminModal").classList.remove("open");
+    }
+
+    function verifyAdminLogin() {
+      const val = document.getElementById("adminPassInput").value.trim();
+      if (val === ADMIN_PASSCODE) {
+        isAdmin = true;
+        sessionStorage.setItem("alliance_us_admin", "1");
+        closeAdminModal();
+        syncAdminUI();
+        renderGallery();
+        showToast("خوش آمدید فرمانده! دسترسی مدیریت فعال شد.");
+      } else {
+        showToast("رمز عبور اشتباه است.");
+      }
+    }
+
+    function syncAdminUI() {
+      const badge = document.getElementById("roleBadge");
+      const btn = document.getElementById("adminToggleBtn");
+      if (isAdmin) {
+        badge.textContent = "فرمانده کلن (Admin)";
+        badge.classList.add("admin");
+        btn.textContent = "خروج از حالت ادمین";
+      } else {
+        badge.textContent = "حالت عضو عادی";
+        badge.classList.remove("admin");
+        btn.textContent = "ورود فرمانده (Admin)";
+      }
+      document.getElementById("adminLockedBox").style.display = isAdmin ? "none" : "block";
+      document.getElementById("adminUnlockedBox").style.display = isAdmin ? "block" : "none";
+      if (isAdmin) renderPendingShots();
+    }
+
+    function normalizeClan(name) {
+      return (name || "").trim();
+    }
+
+    function getApprovedShots() {
+      return allShots.filter(s => s.approved !== false);
+    }
+
+    function getClanCounts(shotsList) {
+      const map = new Map();
+      for (const s of shotsList) {
+        const c = normalizeClan(s.clan);
+        if (!c) continue;
+        map.set(c, (map.get(c) || 0) + 1);
+      }
+      return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+    }
+
+    function refreshClanSelectors() {
+      const approved = getApprovedShots();
+      const sortedClans = getClanCounts(approved);
+      const filterSel = document.getElementById("filterClanSelect");
+      const channelSel = document.getElementById("channelTargetClan");
+      const datalist = document.getElementById("knownClansDatalist");
+
+      const prevFilter = filterSel.value;
+      const prevChannel = channelSel.value;
+
+      filterSel.innerHTML = `<option value="">همه کلن‌های ثبت‌شده (${approved.length})</option>`;
+      channelSel.innerHTML = "";
+      datalist.innerHTML = "";
+
+      for (const [clan, count] of sortedClans) {
+        filterSel.innerHTML += `<option value="${escapeHtml(clan)}">${escapeHtml(clan)} (${count} شات)</option>`;
+        channelSel.innerHTML += `<option value="${escapeHtml(clan)}">${escapeHtml(clan)} (${count} شات تاییدشده)</option>`;
+        datalist.innerHTML += `<option value="${escapeHtml(clan)}"></option>`;
+      }
+
+      if (prevFilter) filterSel.value = prevFilter;
+      if (prevChannel) channelSel.value = prevChannel;
+    }
+
+    function onFilterClanChange() {
+      const selVal = document.getElementById("filterClanSelect").value;
+      document.getElementById("searchClanInput").value = selVal;
+      updateUrlHash(selVal);
+      renderGallery();
+    }
+
+    function selectClanFromCard(clanName) {
+      document.getElementById("searchClanInput").value = clanName;
+      document.getElementById("filterClanSelect").value = clanName;
+      updateUrlHash(clanName);
+      renderGallery();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateUrlHash(clanName) {
+      if (clanName) {
+        history.replaceState(null, "", "#clan=" + encodeURIComponent(clanName));
+      } else {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+    }
+
+    function copyShareLink() {
+      const q = normalizeClan(document.getElementById("searchClanInput").value);
+      const baseUrl = location.origin + location.pathname;
+      const shareUrl = q ? `${baseUrl}#clan=${encodeURIComponent(q)}` : baseUrl;
+      navigator.clipboard?.writeText(shareUrl).then(() => {
+        showToast(q ? `لینک بردهای کلن ${q} کپی شد!` : "لینک سامانه کپی شد!");
+      }).catch(() => {
+        prompt("لینک اشتراک‌گذاری:", shareUrl);
       });
     }
 
-    window.changeRole = async (username, role) => {
-      await update(ref(db, `users/${username}`), { role: role });
-    };
+    function renderGallery() {
+      const query = normalizeClan(document.getElementById("searchClanInput").value).toLowerCase();
+      const approved = getApprovedShots();
+      const sortedClans = getClanCounts(approved);
 
-    window.approveUser = async (username) => {
-      await update(ref(db, `users/${username}`), { status: 'approved' });
-    };
-
-    window.deleteUser = async (username) => {
-      if (confirm('آیا از حذف این عضو مطمئن هستید؟')) {
-        await remove(ref(db, `users/${username}`));
+      const summaryGrid = document.getElementById("clanSummaryGrid");
+      summaryGrid.innerHTML = sortedClans.length ? "" : `<p style="color:var(--muted);">هنوز شاتی ثبت نشده است.</p>`;
+      for (const [clan, count] of sortedClans) {
+        const card = document.createElement("div");
+        card.className = "clan-card";
+        card.innerHTML = `
+          <div>
+            <div style="font-size:0.8rem; color:var(--muted);">کلن دشمن</div>
+            <div style="font-size:1.15rem; font-weight:800;">${escapeHtml(clan)}</div>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="count">${count} شات</span>
+            <button class="btn" onclick="selectClanFromCard('${escapeJs(clan)}')">مشاهده</button>
+          </div>
+        `;
+        summaryGrid.appendChild(card);
       }
-    };
 
-    document.getElementById('clearChatBtn').addEventListener('click', async () => {
-      if(confirm('آیا مطمئنید که کل پیام‌های چت‌روم پاکسازی شوند؟')) {
-        await remove(ref(db, 'messages'));
+      const filtered = query
+        ? approved.filter(s => (s.clan || "").toLowerCase().includes(query))
+        : approved;
+
+      document.getElementById("gallerySummary").textContent = query
+        ? `کلن «${document.getElementById("searchClanInput").value.trim()}»: ${filtered.length} شات برد ثبت شده است`
+        : `مجموع شات‌های تاییدشده کلن: ${filtered.length} شات`;
+
+      const gallery = document.getElementById("shotsGalleryGrid");
+      gallery.innerHTML = filtered.length ? "" : `<p style="color:var(--muted);">هیچ شاتی با این جستجو یافت نشد.</p>`;
+
+      for (const shot of filtered) {
+        gallery.appendChild(createShotCard(shot, false));
+      }
+    }
+
+    function renderPendingShots() {
+      const pending = allShots.filter(s => s.approved === false);
+      const grid = document.getElementById("pendingShotsGrid");
+      grid.innerHTML = pending.length ? "" : `<p style="color:var(--muted);">هیچ شات در انتظار تاییدی وجود ندارد.</p>`;
+      for (const shot of pending) {
+        grid.appendChild(createShotCard(shot, true));
+      }
+    }
+
+    function createShotCard(shot, isPendingQueue) {
+      const div = document.createElement("div");
+      div.className = "shot-card";
+      const dateStr = shot.createdAt ? new Date(shot.createdAt).toLocaleString("fa-IR") : "-";
+      const statusPill = shot.approved === false
+        ? `<span class="pill pill-pending">در انتظار تایید</span>`
+        : `<span class="pill pill-ok">تاییدشده</span>`;
+
+      let actionsHtml = "";
+      if (isPendingQueue && isAdmin) {
+        actionsHtml = `
+          <button class="btn btn-success" style="padding:5px 9px; font-size:0.78rem;" onclick="approveShot('${shot.id}')">تایید</button>
+          <button class="btn btn-danger" style="padding:5px 9px; font-size:0.78rem;" onclick="deleteShot('${shot.id}')">حذف</button>
+        `;
+      } else if (isAdmin) {
+        actionsHtml = `
+          <button class="btn btn-danger" style="padding:5px 9px; font-size:0.78rem;" onclick="deleteShot('${shot.id}')">حذف شات</button>
+        `;
+      }
+
+      div.innerHTML = `
+        <img src="${escapeHtml(shot.url)}" alt="شات ${escapeHtml(shot.clan || "")}" onclick="openImageModal('${escapeJs(shot.clan || "")}', '${escapeJs(shot.url)}', '${escapeJs(shot.uploadedBy || "نامشخص")}', '${escapeJs(dateStr)}')" />
+        <div class="shot-meta">
+          <strong>کلن: ${escapeHtml(shot.clan || "-")}</strong>
+          <div>ثبت‌کننده: ${escapeHtml(shot.uploadedBy || "عضو کلن")}</div>
+          <div>تاریخ: ${escapeHtml(dateStr)}</div>
+          <div style="margin-top:6px;">${statusPill}</div>
+        </div>
+        ${actionsHtml ? `<div class="shot-actions">${actionsHtml}</div>` : ""}
+      `;
+      return div;
+    }
+
+    function openImageModal(clan, url, uploader, dateStr) {
+      document.getElementById("modalImageTitle").textContent = `شات برد مقابل کلن ${clan}`;
+      document.getElementById("modalImageSrc").src = url;
+      document.getElementById("modalImageMeta").textContent = `ثبت‌کننده: ${uploader} | تاریخ ثبت: ${dateStr}`;
+      document.getElementById("imageModal").classList.add("open");
+    }
+
+    function closeImageModal() {
+      document.getElementById("imageModal").classList.remove("open");
+      document.getElementById("modalImageSrc").src = "";
+    }
+
+    function openAllShotsModal() {
+      const query = normalizeClan(document.getElementById("searchClanInput").value).toLowerCase();
+      const approved = getApprovedShots();
+      const matches = query ? approved.filter(s => (s.clan || "").toLowerCase().includes(query)) : approved;
+      if (!matches.length) {
+        showToast("شات فعالی برای نمایش وجود ندارد.");
+        return;
+      }
+      const first = matches[0];
+      const dateStr = first.createdAt ? new Date(first.createdAt).toLocaleString("fa-IR") : "-";
+      openImageModal(first.clan || "همه", first.url, `${first.uploadedBy || "-"} (مجموع ${matches.length} شات)`, dateStr);
+    }
+
+    // Drag & Drop و آپلود دسته‌ای به ImgBB + Firebase
+    const dropzone = document.getElementById("dropzone");
+    ["dragenter", "dragover"].forEach(evt => {
+      dropzone.addEventListener(evt, e => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+    });
+    ["dragleave", "drop"].forEach(evt => {
+      dropzone.addEventListener(evt, e => {
+        e.preventDefault();
+        dropzone.classList.remove("dragover");
+      });
+    });
+    dropzone.addEventListener("drop", e => {
+      if (e.dataTransfer?.files?.length) {
+        handleFilesSelected(e.dataTransfer.files);
       }
     });
 
-    function listenToChat() {
-      onValue(ref(db, 'messages'), (snapshot) => {
-        const chatBox = document.getElementById('chatBox');
-        chatBox.innerHTML = '';
-        if (snapshot.exists()) {
-          const msgs = snapshot.val();
-          for (let key in msgs) {
-            const m = msgs[key];
-            const isMe = m.sender === currentUser.username;
-            const isBot = m.sender === 'bot';
-            
-            const div = document.createElement('div');
-            if (isBot) {
-              div.className = 'chat-bubble chat-bot p-2 my-1 animate__animated animate__fadeIn';
-              div.innerHTML = `<small class="d-block fw-bold opacity-75">🤖 ربات ALLIANCE AI</small>${m.text}`;
-            } else {
-              div.className = `chat-bubble ${isMe ? 'chat-me' : 'chat-other'} animate__animated animate__fadeInUp`;
-              const badge = m.role === 'admin' ? '👑' : (m.role === 'co-leader' ? '⭐' : '⚔️');
-              div.innerHTML = `<small class="d-block fw-bold opacity-75">${badge} ${m.name}</small>${m.text}`;
-            }
-            chatBox.appendChild(div);
-          }
-          chatBox.scrollTop = chatBox.scrollHeight;
+    function handleFilesSelected(fileList) {
+      pendingFiles = Array.from(fileList).filter(f => f.type.startsWith("image/"));
+      const strip = document.getElementById("selectedPreview");
+      strip.innerHTML = "";
+      pendingFiles.slice(0, 30).forEach(file => {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        strip.appendChild(img);
+      });
+      document.getElementById("uploadProgressText").textContent = pendingFiles.length
+        ? `${pendingFiles.length} فایل آماده آپلود است.`
+        : "";
+    }
+
+    async function uploadSingleToImgBB(file) {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(IMGBB_API_KEY)}`, {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      if (!data.success || !data.data?.url) {
+        throw new Error(data.error?.message || "خطا در آپلود به ImgBB");
+      }
+      return data.data.url;
+    }
+
+    async function uploadSelectedShots() {
+      const clan = normalizeClan(document.getElementById("uploadClanName").value);
+      const uploader = normalizeClan(document.getElementById("uploaderName").value) || "عضو کلن";
+      if (!clan) {
+        showToast("لطفاً نام کلن دشمن را وارد کنید.");
+        return;
+      }
+      if (!pendingFiles.length) {
+        showToast("لطفاً حداقل یک شات انتخاب کنید.");
+        return;
+      }
+
+      const btn = document.getElementById("submitUploadBtn");
+      const progress = document.getElementById("uploadProgressText");
+      btn.disabled = true;
+
+      let successCount = 0;
+      for (let i = 0; i < pendingFiles.length; i++) {
+        progress.textContent = `در حال آپلود ${i + 1} از ${pendingFiles.length}...`;
+        try {
+          const url = await uploadSingleToImgBB(pendingFiles[i]);
+          await db.ref("shots").push({
+            clan,
+            url,
+            uploadedBy: uploader,
+            createdAt: Date.now(),
+            approved: isAdmin ? true : false,
+            sentToChannel: false
+          });
+          successCount++;
+        } catch (err) {
+          showToast(`خطا در فایل ${i + 1}: ${err.message}`);
         }
+      }
+
+      btn.disabled = false;
+      pendingFiles = [];
+      document.getElementById("fileInput").value = "";
+      document.getElementById("selectedPreview").innerHTML = "";
+      progress.textContent = `${successCount} شات با موفقیت ثبت شد.`;
+      showToast(isAdmin ? `${successCount} شات مستقیم تایید و ثبت شد.` : `${successCount} شات برای تایید فرمانده ارسال شد.`);
+    }
+
+    function approveShot(id) {
+      if (!isAdmin) return;
+      db.ref(`shots/${id}`).update({ approved: true }).then(() => showToast("شات تایید شد."));
+    }
+
+    function deleteShot(id) {
+      if (!isAdmin) return;
+      if (!confirm("آیا از حذف این شات مطمئن هستید؟")) return;
+      db.ref(`shots/${id}`).remove().then(() => showToast("شات حذف شد."));
+    }
+
+    function queueChannelCommand() {
+      if (!isAdmin) return;
+      const clan = normalizeClan(document.getElementById("channelTargetClan").value);
+      const count = parseInt(document.getElementById("channelSendCount").value, 10) || 100;
+      const mode = document.getElementById("channelSendMode").value;
+      const caption = (document.getElementById("channelCaption").value || "").trim() || `سند برد مقابل کلن ${clan} | ALLIANCE US`;
+
+      if (!clan) {
+        showToast("لطفاً کلن حریف را انتخاب کنید.");
+        return;
+      }
+
+      const matchingShots = getApprovedShots()
+        .filter(s => (s.clan || "").toLowerCase() === clan.toLowerCase())
+        .filter(s => mode === "unsent_first" ? !s.sentToChannel : true)
+        .slice(0, count);
+
+      if (!matchingShots.length) {
+        showToast("هیچ شات مناسبی برای ارسال این کلن پیدا نشد.");
+        return;
+      }
+
+      db.ref("channel_commands").push({
+        clan,
+        requestedCount: count,
+        actualCount: matchingShots.length,
+        mode,
+        caption,
+        urls: matchingShots.map(s => s.url),
+        shotIds: matchingShots.map(s => s.id),
+        status: "pending",
+        createdAt: Date.now()
+      }).then(() => {
+        showToast(`فرمان ارسال ${matchingShots.length} شات از کلن ${clan} در صف کانال قرار گرفت.`);
       });
     }
 
-    window.sendEmoji = (emoji) => {
-      document.getElementById('chatInput').value += emoji;
-    };
-
-    document.getElementById('chatForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-
-      if (text) {
-        const messagesRef = ref(db, 'messages');
-        const newMsgRef = push(messagesRef);
-        await set(newMsgRef, {
-          sender: currentUser.username,
-          name: currentUser.name,
-          role: currentUser.role,
-          text: text,
-          timestamp: Date.now()
-        });
-        
-        input.value = '';
-
-        setTimeout(async () => {
-          const lower = text.toLowerCase();
-          let botReply = "";
-          if (lower.includes("سلام") || lower.includes("درود")) {
-            botReply = `سلام ${currentUser.name} عزیز! خوش آمدی به ALLIANCE US ⚔️`;
-          } else if (lower.includes("قوانین")) {
-            botReply = "احترام متقابل و شرکت فعال در وارها اصلی‌ترین قانون ماست! 🛡️";
-          } else if (lower.includes("لیدر")) {
-            botReply = "لیدر به زودی چت را بررسی و پاسخ خواهد داد 👑";
-          }
-
-          if (botReply) {
-            const botMsgRef = push(messagesRef);
-            await set(botMsgRef, {
-              sender: "bot",
-              name: "Alliance AI",
-              text: botReply,
-              timestamp: Date.now()
-            });
-          }
-        }, 600);
+    function renderChannelCommands() {
+      const box = document.getElementById("channelCommandsList");
+      if (!box) return;
+      if (!channelCommands.length) {
+        box.innerHTML = `<p style="color:var(--muted);">هنوز فرمانی ثبت نشده است.</p>`;
+        return;
       }
+      box.innerHTML = channelCommands.slice(0, 10).map(cmd => {
+        const dt = cmd.createdAt ? new Date(cmd.createdAt).toLocaleString("fa-IR") : "-";
+        return `
+          <div class="cmd-item">
+            <div><strong>کلن: ${escapeHtml(cmd.clan)}</strong> — تعداد: <strong>${cmd.actualCount}</strong> شات — وضعیت: <span class="pill ${cmd.status === "done" ? "pill-ok" : "pill-pending"}">${escapeHtml(cmd.status)}</span></div>
+            <div style="color:var(--muted); margin-top:4px;">کپشن: ${escapeHtml(cmd.caption)}</div>
+            <div style="color:var(--muted); font-size:0.76rem; margin-top:4px;">زمان ثبت: ${escapeHtml(dt)}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+    }
+
+    function escapeJs(str) {
+      return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    }
+
+    // خواندن هش URL برای لینک مستقیم کلن (مثلاً #clan=NX)
+    const hashMatch = location.hash.match(/^#clan=(.+)$/);
+    if (hashMatch) {
+      const initialClan = decodeURIComponent(hashMatch[1]);
+      document.getElementById("searchClanInput").value = initialClan;
+    }
+
+    // گوش دادن زنده به تغییرات دیتابیس
+    db.ref("shots").on("value", snap => {
+      const raw = snap.val() || {};
+      allShots = Object.entries(raw)
+        .map(([id, val]) => ({ id, ...val }))
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      refreshClanSelectors();
+      renderGallery();
+      if (isAdmin) renderPendingShots();
     });
+
+    db.ref("channel_commands").on("value", snap => {
+      const raw = snap.val() || {};
+      channelCommands = Object.entries(raw)
+        .map(([id, val]) => ({ id, ...val }))
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderChannelCommands();
+    });
+
+    syncAdminUI();
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
